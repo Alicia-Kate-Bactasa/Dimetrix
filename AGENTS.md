@@ -1,9 +1,18 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# AGENTS.md
 
-# This is NOT the Next.js you know
+## Project Context
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+Dimetrix is an independent, standalone Vite + React application for real-time power outage tracking in Metro Cebu, Lapu-Lapu City, and Mactan Island.
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+## Development Workflow
 
-<!-- END:nextjs-agent-rules -->
+- `npm run dev`: Starts the local Vite development server at http://localhost:3000.
+- `npm run build`: Compiles production build to `dist/`.
+- `npm run lint`: Runs ESLint checks.
+
+## Key Directories
+
+- `src/`: Application source code (React components, pages, map views, API client).
+- `src/api/apiClient.js`: Local API client and data provider.
+- `src/lib/cebuAreas.js`: Location coordinates, provider mapping (MECO / VECO), barangay lists, and landmarks.
+- `vite.config.js`: Standard Vite + React configuration.

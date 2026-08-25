@@ -1,37 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dimetrix — Metro Cebu & Lapu-Lapu Power Outage Tracker
 
-## Getting Started
+**Dimetrix** is an independent, real-time power outage tracking and grid monitoring platform specifically built for **Metro Cebu, Lapu-Lapu City, and Mactan Island**.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ⚡ Key Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 🗺️ **Live Interactive Grid Map**: Powered by React-Leaflet with custom incident pins for active power outages, exploded transformers, scheduled brownouts, voltage fluctuations, and fallen poles.
+- 📍 **Strict Metro Boundary Locking**: Viewport is strictly constrained to Cebu City, Mandaue City, Lapu-Lapu City, Mactan Island, Cordova, Talisay City, Consolacion, Liloan, and Minglanilla (`CEBU_BOUNDS`).
+- 🔍 **Transparent Location & Grid Coverage**: 
+  - **Grid Provider Indexing**: Clear distinction between **MECO** (*Mactan Electric Company*) for Lapu-Lapu City, Mactan Island, and Cordova vs. **VECO** (*Visayan Electric Company*) for Cebu City and Metro Cebu mainland.
+  - **Barangay & Landmark Breakdown**: Real-time coverage callouts showing covered barangays, hospital hubs, BPO parks, and major highways when filtering locations.
+- 📢 **Verified Community Incident Reporting**: Interactive modal allowing users to report outages, pin precise map coordinates, attach descriptions, select severity levels, and undergo identity verification.
+- 📊 **Power Grid Analytics**: Real-time outage statistics, severity breakdown charts, resolution status tracking, and provider metrics powered by Recharts.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tech Stack
 
-## Learn More
+- **Framework**: [React 18](https://react.dev/) + [Vite](https://vitejs.dev/)
+- **Mapping**: [Leaflet](https://leafletjs.com/) + [React-Leaflet](https://react-leaflet.js.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) + [Shadcn UI](https://ui.shadcn.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Charts**: [Recharts](https://recharts.org/)
+- **Icons**: [Lucide React](https://lucide.dev/)
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Getting Started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Prerequisites
 
-## Deploy on Vercel
+- [Node.js](https://nodejs.org/) (v18 or higher recommended)
+- `npm` (v9 or higher)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Local Development Setup
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# Dimetrix
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/Alicia-Kate-Bactasa/Dimetrix.git
+   cd Dimetrix
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Start local development server**:
+   ```bash
+   npm run dev
+   ```
+   The local application will be available at **http://localhost:3000**.
+
+4. **Build for production**:
+   ```bash
+   npm run build
+   ```
+   Production build output will be compiled to `dist/`.
+
+5. **Run Linter**:
+   ```bash
+   npm run lint
+   ```
+
+---
+
+## 🗺️ Geographical Coverage & Utility Providers
+
+| Region / City | Utility Provider | Key Coverage & Landmarks |
+| :--- | :--- | :--- |
+| **Lapu-Lapu City** | **MECO** (Mactan Electric Co.) | Basak, Gun-ob, Pajo, Poblacion, Canjulao, Pusok, City Hall, Gaisano Grand Plaza, CLIP Industrial Park |
+| **Mactan Island** | **MECO** (Mactan Electric Co.) | Brgy. Mactan, Punta Engano, Maribago, Mactan Newtown, MCIA Airport, JPark & Shangri-La Resorts |
+| **Cordova** | **MECO** (Mactan Electric Co.) | All 13 Barangays, CCLEX Tollway Entrance, Pilipog Bridge, Day-as Boardwalk, Gabi Bridge |
+| **Cebu City** | **VECO** (Visayan Electric Co.) | Lahug, Banilad, Guadalupe, Mabolo, Cebu IT Park, Ayala Center, Provincial Capitol, Chong Hua |
+| **Mandaue City** | **VECO** (Visayan Electric Co.) | Subangdaku, Tipolo, Maguikay, A.S. Fortuna, Oakridge, SM City NRA, Cebu Int'l Port |
+| **Talisay City** | **VECO** (Visayan Electric Co.) | Tabunok, Lawaan, Dumlog, SRP Coastal Highway, Gaisano Grand Fiesta Mall |
+| **Consolacion** | **VECO** (Visayan Electric Co.) | Pitogo, Tayud, SM City Consolacion, Mendero Medical Center, Tayud Shipyards |
+| **Liloan** | **VECO** (Visayan Electric Co.) | Yati, Poblacion Liloan, Liloan Boardwalk, Suba Bridge |
+| **Minglanilla** | **VECO** (Visayan Electric Co.) | Poblacion, Calajoan, Tulay, N. Bacalso Highway, Tubod Flowing Waters |
+
+---
+
+## 📜 Attributions & Licenses
+
+- **Map Tiles**: Powered by [CARTO](https://carto.com/) (`&copy; OpenStreetMap &copy; CARTO`).
+- **Icons**: [Lucide Icons](https://lucide.dev/) (MIT License).
