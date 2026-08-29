@@ -6,63 +6,13 @@
 
 ## ⚡ Key Features
 
-- 🗺️ **Live Interactive Grid Map**: Powered by React-Leaflet with custom incident pins for active power outages, exploded transformers, scheduled brownouts, voltage fluctuations, and fallen poles.
-- 📍 **Strict Metro Boundary Locking**: Viewport is strictly constrained to Cebu City, Mandaue City, Lapu-Lapu City, Mactan Island, Cordova, Talisay City, Consolacion, Liloan, and Minglanilla (`CEBU_BOUNDS`).
-- 🔍 **Transparent Location & Grid Coverage**: 
+- **Live Interactive Grid Map**: Powered by React-Leaflet with custom incident pins for active power outages, exploded transformers, scheduled brownouts, voltage fluctuations, and fallen poles.
+- **Strict Metro Boundary Locking**: Viewport is strictly constrained to Cebu City, Mandaue City, Lapu-Lapu City, Mactan Island, Cordova, Talisay City, Consolacion, Liloan, and Minglanilla (`CEBU_BOUNDS`).
+- **Transparent Location & Grid Coverage**: 
   - **Grid Provider Indexing**: Clear distinction between **MECO** (*Mactan Electric Company*) for Lapu-Lapu City, Mactan Island, and Cordova vs. **VECO** (*Visayan Electric Company*) for Cebu City and Metro Cebu mainland.
   - **Barangay & Landmark Breakdown**: Real-time coverage callouts showing covered barangays, hospital hubs, BPO parks, and major highways when filtering locations.
-- 📢 **Verified Community Incident Reporting**: Interactive modal allowing users to report outages, pin precise map coordinates, attach descriptions, select severity levels, and undergo identity verification.
-- 📊 **Power Grid Analytics**: Real-time outage statistics, severity breakdown charts, resolution status tracking, and provider metrics powered by Recharts.
-
----
-
-## 🛠️ Tech Stack
-
-- **Framework**: [React 18](https://react.dev/) + [Vite](https://vitejs.dev/)
-- **Mapping**: [Leaflet](https://leafletjs.com/) + [React-Leaflet](https://react-leaflet.js.org/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) + [Shadcn UI](https://ui.shadcn.com/)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/)
-- **Charts**: [Recharts](https://recharts.org/)
-- **Icons**: [Lucide React](https://lucide.dev/)
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) (v18 or higher recommended)
-- `npm` (v9 or higher)
-
-### Local Development Setup
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/Alicia-Kate-Bactasa/Dimetrix.git
-   cd Dimetrix
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Start local development server**:
-   ```bash
-   npm run dev
-   ```
-   The local application will be available at **http://localhost:3000**.
-
-4. **Build for production**:
-   ```bash
-   npm run build
-   ```
-   Production build output will be compiled to `dist/`.
-
-5. **Run Linter**:
-   ```bash
-   npm run lint
-   ```
+- **Verified Community Incident Reporting**: Interactive modal allowing users to report outages, pin precise map coordinates, attach descriptions, select severity levels, and undergo identity verification.
+- **Power Grid Analytics**: Real-time outage statistics, severity breakdown charts, resolution status tracking, and provider metrics powered by Recharts.
 
 ---
 
