@@ -4,7 +4,7 @@
 
 ---
 
-## ⚡ Key Features
+## Key Features
 
 - **Live Interactive Grid Map**: Powered by React-Leaflet with custom incident pins for active power outages, exploded transformers, scheduled brownouts, voltage fluctuations, and fallen poles.
 - **Strict Metro Boundary Locking**: Viewport is strictly constrained to Cebu City, Mandaue City, Lapu-Lapu City, Mactan Island, Cordova, Talisay City, Consolacion, Liloan, and Minglanilla (`CEBU_BOUNDS`).
@@ -16,7 +16,7 @@
 
 ---
 
-## 🗺️ Geographical Coverage & Utility Providers
+## Geographical Coverage & Utility Providers
 
 | Region / City | Utility Provider | Key Coverage & Landmarks |
 | :--- | :--- | :--- |
