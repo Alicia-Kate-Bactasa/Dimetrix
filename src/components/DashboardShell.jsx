@@ -9,15 +9,17 @@ import ReportModal from "@/components/ReportModal";
 import ProfileModal from "@/components/ProfileModal";
 
 const navItems = [
-  { href: "/", label: "Live Map", icon: MapIcon },
-  { href: "/analytics", label: "Insights", icon: BarChart3 },
-  { href: "/admin", label: "Moderation", icon: ShieldCheck }
+  { href: "/", label: "Live Map", icon: MapIcon, adminOnly: false },
+  { href: "/analytics", label: "Insights", icon: BarChart3, adminOnly: true },
+  { href: "/admin", label: "Moderation", icon: ShieldCheck, adminOnly: true }
 ];
 
 export default function DashboardShell({ children }) {
   const { user, logout } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
+  const isAdmin = user?.role === "admin";
+  const visibleNavItems = navItems.filter((item) => !item.adminOnly || isAdmin);
 
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -63,7 +65,7 @@ export default function DashboardShell({ children }) {
 
         <div className="flex items-center gap-4">
           <nav className="flex items-center gap-1.5 sm:gap-3">
-            {navItems.map(({ href, label, icon: Icon }) => {
+            {visibleNavItems.map(({ href, label, icon: Icon }) => {
               const isActive = pathname === href;
               return (
                 <Link
@@ -136,15 +138,17 @@ export default function DashboardShell({ children }) {
                   <Edit3 className="w-4 h-4 text-primary" /> View & Edit Profile
                 </button>
 
-                <button
-                  onClick={() => {
-                    setIsProfileDropdownOpen(false);
-                    router.push("/admin");
-                  }}
-                  className="w-full flex items-center gap-2 p-2 rounded-xl text-xs font-hero font-bold text-amber-400 hover:bg-amber-500/10 transition-colors"
-                >
-                  <ShieldCheck className="w-4 h-4 text-amber-400" /> Admin & Moderation
-                </button>
+                {isAdmin && (
+                  <button
+                    onClick={() => {
+                      setIsProfileDropdownOpen(false);
+                      router.push("/admin");
+                    }}
+                    className="w-full flex items-center gap-2 p-2 rounded-xl text-xs font-hero font-bold text-amber-400 hover:bg-amber-500/10 transition-colors"
+                  >
+                    <ShieldCheck className="w-4 h-4 text-amber-400" /> Admin & Moderation
+                  </button>
+                )}
 
                 <button
                   onClick={() => {

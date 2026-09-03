@@ -6,6 +6,7 @@ export async function middleware(req) {
 
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   const isLoggedIn = !!token;
+  const isAdmin = isLoggedIn && token.role === "admin";
 
   const publicPaths = ["/login", "/register", "/forgot-password", "/reset-password"];
   const isPublicPath = publicPaths.some((p) => nextUrl.pathname.startsWith(p));
@@ -13,6 +14,10 @@ export async function middleware(req) {
   const isApiRegister = nextUrl.pathname === "/api/register";
   const isApiIncidentsGet = nextUrl.pathname.startsWith("/api/incidents") && req.method === "GET";
   const isApi = nextUrl.pathname.startsWith("/api");
+
+  // Admin-only page routes
+  const adminPaths = ["/admin", "/analytics"];
+  const isAdminPage = adminPaths.some((p) => nextUrl.pathname.startsWith(p));
 
   // Always allow auth API routes and registration
   if (isApiAuth || isApiRegister) return NextResponse.next();
@@ -23,6 +28,11 @@ export async function middleware(req) {
   // Protect other API routes
   if (isApi && !isLoggedIn) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // Admin-only pages: require admin role (redirect logged-in non-admins home)
+  if (isAdminPage && isLoggedIn && !isAdmin) {
+    return NextResponse.redirect(new URL("/", nextUrl));
   }
 
   // Redirect authenticated users away from auth pages
