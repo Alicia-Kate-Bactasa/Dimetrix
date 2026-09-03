@@ -70,7 +70,8 @@ export const useAuth = () => {
       return result;
     },
     logout: async () => {
-      await signOut({ callbackUrl: "/login" });
+      const origin = typeof window !== "undefined" ? window.location.origin : undefined;
+      await signOut({ callbackUrl: origin ? `${origin}/login` : "/login" });
     },
     navigateToLogin: () => router.push("/login"),
     checkUserAuth: async () => {},

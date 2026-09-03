@@ -9,7 +9,7 @@ import ReportModal from "@/components/ReportModal";
 import ProfileModal from "@/components/ProfileModal";
 
 const navItems = [
-  { href: "/", label: "Live Map", icon: MapIcon, adminOnly: false },
+  { href: "/dashboard", label: "Live Map", icon: MapIcon, adminOnly: false },
   { href: "/analytics", label: "Insights", icon: BarChart3, adminOnly: true },
   { href: "/admin", label: "Moderation", icon: ShieldCheck, adminOnly: true }
 ];
@@ -40,14 +40,14 @@ export default function DashboardShell({ children }) {
   const handleCloseReportModal = () => {
     setIsReportModalOpen(false);
     if (pathname === '/report' || window.location.search.includes('report')) {
-      router.replace('/');
+      router.replace('/dashboard');
     }
   };
 
   const Header = (
     <header className="sticky top-0 z-[1000] bg-accent text-accent-foreground border-b border-white/10 shadow-md">
       <div className="mx-auto max-w-[1400px] px-4 sm:px-8 h-20 sm:h-24 flex items-center justify-between gap-4">
-        <Link href="/" className="flex items-center gap-3.5 group">
+        <Link href="/dashboard" className="flex items-center gap-3.5 group">
           <motion.span
             initial={{ rotate: -8, scale: 0.8 }}
             animate={{ rotate: 0, scale: 1 }}

@@ -8,16 +8,21 @@ export async function middleware(req) {
   const isLoggedIn = !!token;
   const isAdmin = isLoggedIn && token.role === "admin";
 
+  // Public page routes (accessible without auth)
   const publicPaths = ["/login", "/register", "/forgot-password", "/reset-password"];
   const isPublicPath = publicPaths.some((p) => nextUrl.pathname.startsWith(p));
+
+  // Landing page is public too
+  const isLanding = nextUrl.pathname === "/";
+
   const isApiAuth = nextUrl.pathname.startsWith("/api/auth");
   const isApiRegister = nextUrl.pathname === "/api/register";
   const isApiIncidentsGet = nextUrl.pathname.startsWith("/api/incidents") && req.method === "GET";
   const isApi = nextUrl.pathname.startsWith("/api");
 
   // Admin-only page routes
-  const adminPaths = ["/admin", "/analytics"];
-  const isAdminPage = adminPaths.some((p) => nextUrl.pathname.startsWith(p));
+  const protectedPages = ["/dashboard", "/admin", "/analytics"];
+  const isProtectedPage = protectedPages.some((p) => nextUrl.pathname.startsWith(p));
 
   // Always allow auth API routes and registration
   if (isApiAuth || isApiRegister) return NextResponse.next();
@@ -30,18 +35,18 @@ export async function middleware(req) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // Admin-only pages: require admin role (redirect logged-in non-admins home)
-  if (isAdminPage && isLoggedIn && !isAdmin) {
-    return NextResponse.redirect(new URL("/", nextUrl));
+  // Admin-only pages: require admin role (redirect logged-in non-admins to dashboard)
+  if ((nextUrl.pathname.startsWith("/admin") || nextUrl.pathname.startsWith("/analytics")) && isLoggedIn && !isAdmin) {
+    return NextResponse.redirect(new URL("/dashboard", nextUrl));
   }
 
-  // Redirect authenticated users away from auth pages
-  if (isPublicPath && isLoggedIn) {
-    return NextResponse.redirect(new URL("/", nextUrl));
+  // Redirect authenticated users away from auth pages and the landing page
+  if ((isPublicPath || isLanding) && isLoggedIn) {
+    return NextResponse.redirect(new URL("/dashboard", nextUrl));
   }
 
   // Redirect unauthenticated users to login
-  if (!isPublicPath && !isApi && !isLoggedIn) {
+  if (isProtectedPage && !isLoggedIn) {
     return NextResponse.redirect(new URL("/login", nextUrl));
   }
 

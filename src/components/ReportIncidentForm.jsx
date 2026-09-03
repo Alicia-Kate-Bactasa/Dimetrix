@@ -105,7 +105,7 @@ export default function ReportIncidentForm({ onSuccess }) {
       setDone(true);
       setTimeout(() => {
         if (typeof onSuccess === "function") onSuccess();
-        else router.push("/");
+        else router.push("/dashboard");
       }, 1600);
     } catch (e) {
       setErrorMsg("Failed to confirm incident. Please try again.");
@@ -170,7 +170,7 @@ export default function ReportIncidentForm({ onSuccess }) {
 
       setTimeout(() => {
         if (typeof onSuccess === "function") onSuccess();
-        else router.push("/");
+        else router.push("/dashboard");
       }, 1600);
     } catch (e) {
       setErrorMsg("Failed to submit report. Please try again.");

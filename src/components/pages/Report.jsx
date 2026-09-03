@@ -7,7 +7,7 @@ export default function Report() {
 
   useEffect(() => {
     // Redirect to home page with report modal query parameter open
-    router.replace("/?report=true");
+    router.replace("/dashboard?report=true");
   }, [router]);
 
   return null;

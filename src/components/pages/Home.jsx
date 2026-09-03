@@ -65,7 +65,7 @@ export default function Home() {
 
   const handleOpenReportModal = () => {
     window.dispatchEvent(new CustomEvent("open-report-modal"));
-    router.push("/?report=" + Date.now());
+    router.push("/dashboard?report=" + Date.now());
   };
 
   const handleConfirmIncident = async (id) => {
