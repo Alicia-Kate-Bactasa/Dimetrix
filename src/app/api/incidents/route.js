@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { createIncidentSchema } from "@/lib/validations";
 import { NextResponse } from "next/server";
 import { toSnake, toCamel } from "@/lib/serialize";
+import { rateLimit } from "@/lib/rate-limit";
 
 export async function GET() {
   try {
@@ -29,6 +30,15 @@ export async function POST(request) {
 
     if (!result.success) {
       return NextResponse.json({ error: "Validation failed", details: result.error.format() }, { status: 400 });
+    }
+
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      request.headers.get("x-real-ip") ||
+      "unknown";
+    const limit = rateLimit({ key: `create-incident:${session.user.id}:${ip}`, limit: 10, windowMs: 60_000 });
+    if (!limit.ok) {
+      return NextResponse.json({ error: "Too many reports. Please wait before submitting again." }, { status: 429 });
     }
 
     const incident = await prisma.incident.create({
