@@ -22,6 +22,11 @@
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 ![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=for-the-badge&logo=leaflet&logoColor=white)
 
+## Website
+
+**Checkout** and **explore** the website here:
+> ***dimetrix.vercel.app***
+
 ## Screenshots
 
 <table>
@@ -42,11 +47,6 @@
     <td width="50%" align="center"><strong>Management</strong><br><br><img src="screenshots/mainAdminManagement.png" alt="Dimetrix admin management page" width="100%"></td>
   </tr>
 </table>
-
-## Website
-
-**Checkout** and **explore** the website here:
-> ***dimetrix.vercel.app***
 
 ## Credits
 
