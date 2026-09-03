@@ -2,6 +2,39 @@
 
 **Dimetrix** is an independent, real-time power outage tracking and grid monitoring platform specifically built for **Metro Cebu, Lapu-Lapu City, and Mactan Island**.
 
+## Tech Stack
+
+- **Frontend:** Next.js 14 (App Router), React 18, Tailwind CSS, shadcn/ui
+- **Backend:** Next.js Route Handlers, Prisma ORM
+- **Database:** Neon PostgreSQL
+- **Auth:** Auth.js v5 (NextAuth) — Credentials + Google OAuth
+- **Validation:** Zod
+- **Deployment:** Vercel
+
+## Getting Started
+
+1. **Install:** `npm install`
+2. **Configure env:** copy `.env.example` to `.env.local` and fill in `DATABASE_URL`, `NEXTAUTH_SECRET`, and `NEXTAUTH_URL`. Google OAuth vars are optional.
+3. **Push schema:** `npm run db:push`
+4. **Seed demo data:** log in as an admin and use the "Seed sample data" action in the Moderation panel.
+5. **Run dev:** `npm run dev` → http://localhost:3000
+
+## Security
+
+- All API mutation routes require an authenticated session (enforced in middleware + per-route).
+- Zod validation on all inputs; passwords hashed with bcrypt (cost 12).
+- Per-route rate limiting for registration, password change, report creation, confirm, and flag endpoints (in-memory — swap for a shared store on serverless fleets for strict guarantees).
+- Content Security Policy, HSTS, X-Frame-Options, and other security headers set in `next.config.mjs`.
+- Environment variables validated at startup in production (`src/lib/env.js`).
+- Safe `returnTo` redirect validation prevents open-redirect attacks (`src/lib/authReturnTo.js`).
+
+## Deploying to Vercel
+
+1. Push the repo to GitHub.
+2. In Vercel, **Import Project** → select the repo. Vercel auto-detects Next.js from `vercel.json`.
+3. Add the environment variables from `.env.example` (set `NEXTAUTH_URL` to your production URL, generate a fresh `NEXTAUTH_SECRET` with `openssl rand -base64 32`).
+4. Deploy.
+
 ---
 
 ## Key Features
@@ -34,5 +67,5 @@
 
 ## 📜 Attributions & Licenses
 
-- **Map Tiles**: Powered by [CARTO](https://carto.com/) (`&copy; OpenStreetMap &copy; CARTO`).
+- **Map Tiles**: Powered by [OpenStreetMap](https://www.openstreetmap.org/) (`&copy; OpenStreetMap contributors`).
 - **Icons**: [Lucide Icons](https://lucide.dev/) (MIT License).
