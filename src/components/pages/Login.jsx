@@ -16,7 +16,7 @@ export default function Login() {
   const { login } = useAuth();
   const router = useRouter();
 
-  const returnTo = safeReturnTo() || "/";
+  const returnTo = safeReturnTo() || "/dashboard";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,7 +45,7 @@ export default function Login() {
         <>
           Don't have an account?{" "}
           <Link
-            href={"/register" + (returnTo !== "/" ? "?returnTo=" + encodeURIComponent(returnTo) : "")}
+            href={"/register" + (returnTo !== "/dashboard" ? "?returnTo=" + encodeURIComponent(returnTo) : "")}
             className="text-primary font-medium hover:underline"
           >
             Create one
