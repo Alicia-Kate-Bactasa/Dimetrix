@@ -6,7 +6,10 @@ const toSnakeCase = (str) => {
 	return str.replace(/([A-Z])/g, '_$1').toLowerCase();
 }
 
-const getAppParamValue = (paramName, { defaultValue = undefined, removeFromUrl = false } = {}) => {
+const defaultFromUrl = () => (isNode ? '' : window.location.href);
+const defaultAppBaseUrl = () => (isNode ? '' : window.location.origin);
+
+const getAppParamValue = (paramName, { defaultValue, removeFromUrl = false } = {}) => {
 	if (isNode) {
 		return defaultValue;
 	}
@@ -42,9 +45,9 @@ const getAppParams = () => {
 	return {
 		appId: getAppParamValue("app_id", { defaultValue: "dimetrix-app" }),
 		token: getAppParamValue("access_token", { removeFromUrl: true }),
-		fromUrl: getAppParamValue("from_url", { defaultValue: window.location.href }),
+		fromUrl: getAppParamValue("from_url", { defaultValue: defaultFromUrl() }),
 		functionsVersion: getAppParamValue("functions_version", { defaultValue: "1.0.0" }),
-		appBaseUrl: getAppParamValue("app_base_url", { defaultValue: window.location.origin }),
+		appBaseUrl: getAppParamValue("app_base_url", { defaultValue: defaultAppBaseUrl() }),
 	}
 }
 

@@ -1,6 +1,8 @@
 import "@/app/globals.css";
 import Providers from "@/components/Providers";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Dimetrix — Cebu Power Outage Map & Analytics",
   description:
