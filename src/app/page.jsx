@@ -28,7 +28,9 @@ export default function LandingPage() {
           <span className="grid place-items-center w-9 h-9 rounded-xl bg-primary text-primary-foreground">
             <Zap className="w-5 h-5" strokeWidth={2.5} />
           </span>
-          <span className="font-brand text-2xl tracking-wider text-white">DIMETRIX</span>
+          <span className="font-brand text-2xl tracking-wider text-white">
+            DIMETRIX
+          </span>
         </div>
         <div className="flex items-center gap-3">
           <Link
