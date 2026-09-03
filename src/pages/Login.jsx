@@ -26,7 +26,7 @@ export default function Login() {
     try {
       await login(email, password);
       if (returnTo.startsWith('/')) {
-        navigate(returnTo);
+        router.push(returnTo);
       } else {
         window.location.href = returnTo;
       }
@@ -42,7 +42,7 @@ export default function Login() {
     try {
       await loginWithGoogle();
       if (returnTo.startsWith('/')) {
-        navigate(returnTo);
+        router.push(returnTo);
       } else {
         window.location.href = returnTo;
       }
