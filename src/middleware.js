@@ -1,26 +1,56 @@
 import { NextResponse } from "next/server";
-import NextAuth from "next-auth";
-import { authConfig } from "@/lib/auth.config";
+import { getToken } from "next-auth/jwt";
 
-// Lightweight Edge-safe auth instance: only authConfig (secret + JWT
-// callbacks), no Prisma adapter. Importing "@/lib/auth" here would pull
-// PrismaClient into the Edge runtime and crash the middleware on Vercel.
-const { auth } = NextAuth(authConfig);
-
-// Auth.js v5 middleware. Uses the same secret + JWT handling as the
-// [...nextauth] route handler, so a session created at login is correctly
-// recognized here.
+// Edge-safe middleware (no Prisma / bcrypt imports — those crash the Edge
+// runtime on Vercel). Reads the Auth.js v5 JWT session cookie directly with
+// the same secret the [...nextauth] handler signs with.
 //
-// The previous implementation used `getToken` from `next-auth/jwt` with an
-// explicit `NEXTAUTH_SECRET`. In v5 the session cookie is `authjs.session-token`
-// (secure-prefixed in production) and the secret env is `AUTH_SECRET` —
-// `getToken` with old defaults never found the token, so `isLoggedIn` was
-// always false in production and /dashboard bounced straight back to /login
-// after a successful sign-in.
-export default auth((req) => {
+// Cookie/secret notes:
+// - v5 cookie is `authjs.session-token` (`__Secure-` prefixed over https).
+// - The signing secret may live in AUTH_SECRET (v5) or NEXTAUTH_SECRET
+//   (legacy). We try both so a project with either one set still verifies.
+// - secureCookie is tried as true then false, so local http and Vercel https
+//   both work. A legacy `next-auth.session-token` name is tried as fallback.
+async function getSessionToken(req) {
+  const secrets = [process.env.AUTH_SECRET, process.env.NEXTAUTH_SECRET].filter(Boolean);
+  const secretList = secrets.length > 0 ? secrets : [undefined];
+
+  for (const secureCookie of [true, false]) {
+    for (const secret of secretList) {
+      try {
+        const token = await getToken({ req, secret, secureCookie });
+        if (token) return token;
+      } catch {
+        // try next combination
+      }
+    }
+    // Legacy v4 cookie-name fallback (harmless if no such cookie exists)
+    for (const secret of secretList) {
+      try {
+        const token = await getToken({
+          req,
+          secret,
+          secureCookie,
+          cookieName: `${secureCookie ? "__Secure-" : ""}next-auth.session-token`,
+        });
+        if (token) return token;
+      } catch {
+        // try next combination
+      }
+    }
+  }
+  return null;
+}
+
+export async function middleware(req) {
   const { nextUrl } = req;
 
-  const token = req.auth;
+  let token = null;
+  try {
+    token = await getSessionToken(req);
+  } catch {
+    token = null;
+  }
   const isLoggedIn = !!token;
   const isAdmin = isLoggedIn && token.role === "admin";
 
@@ -71,7 +101,7 @@ export default auth((req) => {
   }
 
   return NextResponse.next();
-});
+}
 
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico|manifest.json).*)"],
