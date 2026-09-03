@@ -22,6 +22,27 @@
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 ![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=for-the-badge&logo=leaflet&logoColor=white)
 
+## Screenshots
+
+<table>
+  <tr>
+    <td width="50%" align="center"><strong>Landing Page</strong><br><br><img src="screenshots/landingPage.png" alt="Dimetrix landing page" width="100%"></td>
+    <td width="50%" align="center"><strong>Sign In</strong><br><br><img src="screenshots/login.png" alt="Dimetrix sign-in page" width="100%"></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><strong>Sign Up</strong><br><br><img src="screenshots/signUp.png" alt="Dimetrix sign-up page" width="100%"></td>
+    <td width="50%" align="center"><strong>User Dashboard</strong><br><br><img src="screenshots/mainUserDashboard.png" alt="Dimetrix user dashboard" width="100%"></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><strong>Submit an Outage Report</strong><br><br><img src="screenshots/mainUserDashboardReport.png" alt="Outage reporting interface" width="100%"></td>
+    <td width="50%" align="center"><strong>Admin Dashboard</strong><br><br><img src="screenshots/mainAdminDashboard.png" alt="Dimetrix admin dashboard" width="100%"></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><strong>Analytics</strong><br><br><img src="screenshots/mainAdminAnalytics.png" alt="Dimetrix analytics dashboard" width="100%"></td>
+    <td width="50%" align="center"><strong>Management</strong><br><br><img src="screenshots/mainAdminManagement.png" alt="Dimetrix admin management page" width="100%"></td>
+  </tr>
+</table>
+
 ## Website
 
 **Checkout** and **explore** the website here:
