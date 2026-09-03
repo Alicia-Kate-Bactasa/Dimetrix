@@ -75,6 +75,19 @@ export const apiClient = {
     },
   },
   auth: {
+    register: async ({ name, email, password }) => {
+      const res = await fetch(`${API_BASE}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+      if (!res.ok) {
+        let detail = "Registration failed";
+        try { detail = (await res.json()).error || detail; } catch (_) {}
+        throw new Error(detail);
+      }
+      return res.json();
+    },
     me: async () => {
       const res = await fetch(`${API_BASE}/user`);
       if (!res.ok) return null;

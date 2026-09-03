@@ -54,6 +54,21 @@ export const useAuth = () => {
       if (result?.error) throw new Error(result.error);
       return result;
     },
+    register: async ({ name, email, password }) => {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+      if (!res.ok) {
+        let detail = "Registration failed";
+        try { detail = (await res.json()).error || detail; } catch (_) {}
+        throw new Error(detail);
+      }
+      const result = await signIn("credentials", { email, password, redirect: false });
+      if (result?.error) throw new Error(result.error);
+      return result;
+    },
     loginWithGoogle: async () => {
       await signIn("google", { callbackUrl: "/" });
     },
