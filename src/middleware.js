@@ -1,10 +1,26 @@
 import { NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
+import NextAuth from "next-auth";
+import { authConfig } from "@/lib/auth.config";
 
-export async function middleware(req) {
+// Lightweight Edge-safe auth instance: only authConfig (secret + JWT
+// callbacks), no Prisma adapter. Importing "@/lib/auth" here would pull
+// PrismaClient into the Edge runtime and crash the middleware on Vercel.
+const { auth } = NextAuth(authConfig);
+
+// Auth.js v5 middleware. Uses the same secret + JWT handling as the
+// [...nextauth] route handler, so a session created at login is correctly
+// recognized here.
+//
+// The previous implementation used `getToken` from `next-auth/jwt` with an
+// explicit `NEXTAUTH_SECRET`. In v5 the session cookie is `authjs.session-token`
+// (secure-prefixed in production) and the secret env is `AUTH_SECRET` —
+// `getToken` with old defaults never found the token, so `isLoggedIn` was
+// always false in production and /dashboard bounced straight back to /login
+// after a successful sign-in.
+export default auth((req) => {
   const { nextUrl } = req;
 
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const token = req.auth;
   const isLoggedIn = !!token;
   const isAdmin = isLoggedIn && token.role === "admin";
 
@@ -21,7 +37,7 @@ export async function middleware(req) {
   const isApi = nextUrl.pathname.startsWith("/api");
 
   // Admin-only page routes
-  const protectedPages = ["/dashboard", "/admin", "/analytics"];
+  const protectedPages = ["/dashboard", "/admin", "/analytics", "/report"];
   const isProtectedPage = protectedPages.some((p) => nextUrl.pathname.startsWith(p));
 
   // Always allow auth API routes and registration
@@ -45,13 +61,17 @@ export async function middleware(req) {
     return NextResponse.redirect(new URL("/dashboard", nextUrl));
   }
 
-  // Redirect unauthenticated users to login
+  // Redirect unauthenticated users to login (preserve destination)
   if (isProtectedPage && !isLoggedIn) {
-    return NextResponse.redirect(new URL("/login", nextUrl));
+    const loginUrl = new URL("/login", nextUrl);
+    if (nextUrl.pathname !== "/login") {
+      loginUrl.searchParams.set("returnTo", nextUrl.pathname + nextUrl.search);
+    }
+    return NextResponse.redirect(loginUrl);
   }
 
   return NextResponse.next();
-}
+});
 
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico|manifest.json).*)"],

@@ -36,8 +36,11 @@ export default function Register() {
     setLoading(true);
     try {
       await register({ name, email, password });
+      // Refresh the session on the client, then navigate (see Login).
+      router.refresh();
       if (returnTo.startsWith('/')) {
         router.push(returnTo);
+        router.refresh();
       } else {
         window.location.href = returnTo;
       }
@@ -53,8 +56,10 @@ export default function Register() {
     setLoading(true);
     try {
       await login(email, password);
+      router.refresh();
       if (returnTo.startsWith('/')) {
         router.push(returnTo);
+        router.refresh();
       } else {
         window.location.href = returnTo;
       }

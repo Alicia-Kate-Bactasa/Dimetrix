@@ -4,10 +4,16 @@
  * silently run without a working database or auth secret.
  */
 
-const required = ["DATABASE_URL", "NEXTAUTH_SECRET"];
+const required = ["DATABASE_URL"];
 
 export function assertEnv() {
   const missing = required.filter((key) => !process.env[key]);
+
+  // Auth.js v5 uses AUTH_SECRET; legacy projects use NEXTAUTH_SECRET.
+  // Accept either — but one of them must be set.
+  if (!process.env.AUTH_SECRET && !process.env.NEXTAUTH_SECRET) {
+    missing.push("AUTH_SECRET (or NEXTAUTH_SECRET)");
+  }
 
   if (process.env.NODE_ENV === "production" && missing.length > 0) {
     throw new Error(

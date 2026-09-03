@@ -24,8 +24,12 @@ export default function Login() {
     setLoading(true);
     try {
       await login(email, password);
+      // Refresh the session on the client, then navigate. Without refresh(),
+      // useSession stays stale and the dashboard can bounce back to /login.
+      router.refresh();
       if (returnTo.startsWith('/')) {
         router.push(returnTo);
+        router.refresh();
       } else {
         window.location.href = returnTo;
       }

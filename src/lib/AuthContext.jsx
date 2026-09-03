@@ -51,7 +51,14 @@ export const useAuth = () => {
         password,
         redirect: false,
       });
-      if (result?.error) throw new Error(result.error);
+      if (result?.error) {
+        throw new Error(
+          result.error === "CredentialsSignin"
+            ? "Invalid email or password"
+            : result.error
+        );
+      }
+      if (!result?.ok) throw new Error("Invalid email or password");
       return result;
     },
     register: async ({ name, email, password }) => {
@@ -66,7 +73,14 @@ export const useAuth = () => {
         throw new Error(detail);
       }
       const result = await signIn("credentials", { email, password, redirect: false });
-      if (result?.error) throw new Error(result.error);
+      if (result?.error) {
+        throw new Error(
+          result.error === "CredentialsSignin"
+            ? "Invalid email or password"
+            : result.error
+        );
+      }
+      if (!result?.ok) throw new Error("Registration failed");
       return result;
     },
     logout: async () => {
