@@ -63,6 +63,7 @@ export default {
         }
       },
       fontFamily: {
+        brand: ['var(--font-brand)'],
         heading: ['var(--font-heading)'],
         body: ['var(--font-body)'],
         display: ['var(--font-display)'],

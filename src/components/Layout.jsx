@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Zap, Map as MapIcon, BarChart3, Megaphone, LogOut, Edit3 } from "lucide-react";
+import { Zap, Map as MapIcon, BarChart3, Megaphone, LogOut, Edit3, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
 import ReportModal from "@/components/ReportModal";
 import ProfileModal from "@/components/ProfileModal";
 
 const navItems = [
   { to: "/", label: "Live Map", icon: MapIcon, end: true },
-  { to: "/analytics", label: "Insights", icon: BarChart3 }
+  { to: "/analytics", label: "Insights", icon: BarChart3 },
+  { to: "/admin", label: "Moderation", icon: ShieldCheck }
 ];
 
 export default function Layout() {
@@ -53,7 +54,7 @@ export default function Layout() {
             <span className="absolute inset-0 rounded-2xl ring-2 ring-primary/40 animate-pulse-ring" />
           </motion.span>
           <div className="leading-none space-y-1">
-            <span className="block font-heading text-2xl sm:text-3xl tracking-wider text-white font-normal">DIMETRIX</span>
+            <span className="block font-brand text-2xl sm:text-3xl tracking-wider text-white font-normal">DIMETRIX</span>
             <span className="block font-body text-[10px] sm:text-[11px] text-white/60 tracking-[0.2em] uppercase font-normal">Cebu · Power Watch</span>
           </div>
         </Link>
@@ -122,7 +123,7 @@ export default function Layout() {
                       {user?.role || 'Admin'}
                     </span>
                     <span className="inline-block px-2 py-0.5 rounded text-[10px] uppercase font-hero font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                      {user?.id_type || 'Passport'} Verified
+                      Community Member
                     </span>
                   </div>
                 </div>
@@ -135,6 +136,16 @@ export default function Layout() {
                   className="w-full flex items-center gap-2 p-2 rounded-xl text-xs font-hero font-bold text-white hover:bg-white/10 transition-colors"
                 >
                   <Edit3 className="w-4 h-4 text-primary" /> View & Edit Profile
+                </button>
+
+                <button
+                  onClick={() => {
+                    setIsProfileDropdownOpen(false);
+                    navigate("/admin");
+                  }}
+                  className="w-full flex items-center gap-2 p-2 rounded-xl text-xs font-hero font-bold text-amber-400 hover:bg-amber-500/10 transition-colors"
+                >
+                  <ShieldCheck className="w-4 h-4 text-amber-400" /> Admin & Moderation
                 </button>
 
                 <button

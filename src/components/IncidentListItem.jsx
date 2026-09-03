@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { MapPin, Clock } from "lucide-react";
-import { TypeBadge, StatusBadge, SeverityDot } from "@/components/IncidentBadge";
+import { Clock } from "lucide-react";
+import { TypeBadge, StatusBadge, SourceBadge } from "@/components/IncidentBadge";
 
 const timeAgo = (iso) => {
   if (!iso) return "—";
@@ -13,34 +13,39 @@ const timeAgo = (iso) => {
 
 export default function IncidentListItem({ incident, onSelect, selected }) {
   const isSel = selected?.id === incident.id;
+
   return (
     <motion.button
       layout
-      initial={{ opacity: 0, y: 8 }}
+      initial={{ opacity: 0, y: 4 }}
       animate={{ opacity: 1, y: 0 }}
       onClick={() => onSelect(incident)}
-      whileHover={{ x: 3 }}
-      className={`w-full text-left rounded-2xl border p-3.5 transition-colors ${
+      className={`w-full text-left rounded-2xl border p-3.5 transition-all ${
         isSel
           ? "border-primary bg-primary/5 shadow-sm"
-          : "border-border bg-card hover:border-foreground/20"
+          : "border-border/80 bg-card hover:border-foreground/20"
       }`}
     >
       <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
-          <p className="font-hero font-bold text-sm leading-tight truncate text-foreground">{incident.title}</p>
-          <p className="flex items-center gap-1 text-[11px] text-muted-foreground mt-0.5 font-body">
-            <MapPin className="w-3 h-3 text-primary" /> {incident.area}
+        <div className="min-w-0 flex-1 space-y-1">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <SourceBadge sourceType={incident.source_type} />
+            <TypeBadge type={incident.type} />
+          </div>
+          
+          <p className="font-bold text-sm leading-snug truncate text-foreground">{incident.title}</p>
+          
+          <p className="text-xs text-muted-foreground">
+            {incident.area} {incident.barangay ? `· ${incident.barangay}` : ""}
           </p>
         </div>
-        <span className="flex items-center gap-1 text-[10px] text-muted-foreground font-body whitespace-nowrap">
-          <Clock className="w-3 h-3" /> {timeAgo(incident.start_time || incident.created_date)}
-        </span>
-      </div>
-      <div className="flex items-center gap-1.5 flex-wrap mt-2.5">
-        <TypeBadge type={incident.type} />
-        <StatusBadge type={undefined} status={incident.status} />
-        <SeverityDot severity={incident.severity} className="ml-auto" />
+
+        <div className="flex flex-col items-end gap-1 shrink-0">
+          <StatusBadge status={incident.status} />
+          <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+            <Clock className="w-3 h-3" /> {timeAgo(incident.start_time || incident.created_date)}
+          </span>
+        </div>
       </div>
     </motion.button>
   );

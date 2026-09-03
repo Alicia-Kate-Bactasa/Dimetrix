@@ -2,16 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShieldCheck, Edit3, Save, CheckCircle2 } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
-import { Button, Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui";
-
-const ID_TYPES = [
-  { value: "Passport", label: "Passport" },
-  { value: "PhilSys National ID", label: "PhilSys National ID" },
-  { value: "Driver's License", label: "Driver's License" },
-  { value: "Voter's ID", label: "Voter's ID" },
-  { value: "UMID", label: "UMID" },
-  { value: "Other", label: "Other valid ID" }
-];
+import { Button, Input, Label } from "@/components/ui";
 
 export default function ProfileModal({ isOpen, onClose }) {
   const { user, updateUser } = useAuth();
@@ -20,9 +11,7 @@ export default function ProfileModal({ isOpen, onClose }) {
 
   const [fullName, setFullName] = useState(user?.full_name || "Alicia Bactasa");
   const [email, setEmail] = useState(user?.email || "alicia@dimetrix.io");
-  const [idType, setIdType] = useState(user?.id_type || "Passport");
-  const [idNumber, setIdNumber] = useState(user?.id_number || "123456789");
-  const [department, setDepartment] = useState(user?.department || "Security & Grid Monitoring");
+  const [department, setDepartment] = useState(user?.department || "Community Outage Tracker");
 
   if (!isOpen) return null;
 
@@ -31,8 +20,6 @@ export default function ProfileModal({ isOpen, onClose }) {
     updateUser({
       full_name: fullName,
       email: email,
-      id_type: idType,
-      id_number: idNumber,
       department: department
     });
 
@@ -69,7 +56,7 @@ export default function ProfileModal({ isOpen, onClose }) {
               <div className="flex items-center gap-2">
                 <h2 className="font-hero font-bold text-2xl text-foreground">{user?.full_name || 'Alicia Bactasa'}</h2>
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-hero font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
-                  <ShieldCheck className="w-3 h-3" /> Verified
+                  <ShieldCheck className="w-3 h-3" /> Community Member
                 </span>
               </div>
               <p className="font-body text-xs text-muted-foreground mt-0.5">{user?.email || 'alicia@dimetrix.io'}</p>
@@ -99,19 +86,11 @@ export default function ProfileModal({ isOpen, onClose }) {
                   <span className="font-hero font-bold text-xs text-foreground">{user?.email || 'alicia@dimetrix.io'}</span>
                 </div>
                 <div className="flex items-center justify-between pt-2 border-t border-border/50">
-                  <span className="font-body text-xs text-muted-foreground">Valid ID Type</span>
-                  <span className="font-hero font-bold text-xs text-foreground">{user?.id_type || 'Passport'}</span>
+                  <span className="font-body text-xs text-muted-foreground">Role / Title</span>
+                  <span className="font-hero font-bold text-xs text-foreground">{user?.department || 'Community Outage Tracker'}</span>
                 </div>
                 <div className="flex items-center justify-between pt-2 border-t border-border/50">
-                  <span className="font-body text-xs text-muted-foreground">ID Number</span>
-                  <span className="font-mono font-bold text-xs text-primary">{user?.id_number || '123456789'}</span>
-                </div>
-                <div className="flex items-center justify-between pt-2 border-t border-border/50">
-                  <span className="font-body text-xs text-muted-foreground">Department</span>
-                  <span className="font-hero font-bold text-xs text-foreground">{user?.department || 'Security & Grid Monitoring'}</span>
-                </div>
-                <div className="flex items-center justify-between pt-2 border-t border-border/50">
-                  <span className="font-body text-xs text-muted-foreground">System Role</span>
+                  <span className="font-body text-xs text-muted-foreground">Account Access</span>
                   <span className="font-hero font-bold text-xs uppercase px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20">
                     {user?.role || 'Admin'}
                   </span>
@@ -129,7 +108,7 @@ export default function ProfileModal({ isOpen, onClose }) {
             /* EDIT MODE */
             <form onSubmit={handleSave} className="space-y-4">
               <div className="space-y-2">
-                <Label className="font-hero font-bold">Full Name (as on ID)</Label>
+                <Label className="font-hero font-bold">Full Name</Label>
                 <Input
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
@@ -149,32 +128,8 @@ export default function ProfileModal({ isOpen, onClose }) {
                 />
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-3">
-                <div className="space-y-2">
-                  <Label className="font-hero font-bold">ID Type</Label>
-                  <Select value={idType} onValueChange={setIdType}>
-                    <SelectTrigger className="h-11 rounded-xl"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      {ID_TYPES.map((t) => (
-                        <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="font-hero font-bold">ID Number</Label>
-                  <Input
-                    value={idNumber}
-                    onChange={(e) => setIdNumber(e.target.value)}
-                    className="h-11 rounded-xl font-mono"
-                    required
-                  />
-                </div>
-              </div>
-
               <div className="space-y-2">
-                <Label className="font-hero font-bold">Department / Division</Label>
+                <Label className="font-hero font-bold">Role / Community Title</Label>
                 <Input
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}

@@ -7,9 +7,7 @@ const MOCK_USER = {
   email: 'alicia@dimetrix.io',
   full_name: 'Alicia Bactasa',
   role: 'admin',
-  id_type: 'Passport',
-  id_number: '123456789',
-  department: 'Security & Grid Monitoring',
+  department: 'Community Outage Tracker',
   verified: true
 };
 

@@ -1,4 +1,4 @@
-// Cebu area reference data — coordinates, transparent location coverage, and friendly labels.
+// Cebu area reference data — coordinates, coverage descriptions, and friendly labels.
 export const CEBU_CENTER = [10.3157, 123.9054];
 
 // Strictly locks map view to Cebu City & Lapu-Lapu / Mactan Island only
@@ -12,16 +12,14 @@ export const CEBU_AREAS = [
     name: "Lapu-Lapu City",
     lat: 10.3103,
     lng: 124.0144,
-    provider: "MECO (Mactan Electric Company)",
     barangays: ["Basak", "Gun-ob", "Pajo", "Poblacion", "Canjulao", "Pusok", "Ibo", "Bankal", "Pajac", "Agus", "Marigondon", "Suba Masulog"],
     landmarks: ["Lapu-Lapu City Hall", "Gaisano Grand Plaza", "City Time Square", "Hoopsdome", "Super Metro", "Mactan Town Center", "Mactan Doctor's Hospital", "MactanMed", "CLIP Industrial Park"],
-    coverageDescription: "Urban & commercial Lapu-Lapu City center, MV Patalinghug Highway, Sangi Rd, Basak Marigondon corridor, City Hall civic hub, and Cebu Light Industrial Park (CLIP)."
+    coverageDescription: "Urban & commercial Lapu-Lapu City center, MV Patalinghug Highway, Sangi Rd, Basak Marigondon corridor, City Hall civic hub, and industrial park."
   },
   {
     name: "Mactan",
     lat: 10.2883,
     lng: 124.0144,
-    provider: "MECO (Mactan Electric Company)",
     barangays: ["Brgy. Mactan", "Punta Engano", "Maribago", "Soong", "Buaya"],
     landmarks: ["Mactan Shrine", "Mactan Newtown Cyberpark", "Shangri-La Mactan", "JPark Island Resort", "Plantation Bay Resort", "Bigfoot Studios", "Mactan-Cebu Int'l Airport (MCIA)", "Marina Mall"],
     coverageDescription: "Eastern Mactan island resort strip, Mactan Newtown tech township, Punta Engano luxury peninsula, Mactan Shrine heritage area, and airport access roads."
@@ -30,7 +28,6 @@ export const CEBU_AREAS = [
     name: "Cordova",
     lat: 10.2520,
     lng: 123.9480,
-    provider: "MECO (Mactan Electric Company)",
     barangays: ["Poblacion", "Ibabao", "San Miguel", "Pilipog", "Catarman", "Buagsong", "Day-as", "Bangbang", "Dapitan", "Cogon", "Alegria", "Gabi", "Suba-Basbas"],
     landmarks: ["Cordova Municipal Hall", "CCLEX Expressway Tollway Entrance", "Pilipog Bridge", "Day-as Boardwalk", "Gabi Bridge", "Pacific Grand Villas"],
     coverageDescription: "Supplies all 13 barangays of Cordova island municipality, CCLEX bridge expressway connection corridor, Gabi bridge link, and coastal fishing communities."
@@ -39,7 +36,6 @@ export const CEBU_AREAS = [
     name: "Cebu City",
     lat: 10.3157,
     lng: 123.8854,
-    provider: "VECO (Visayan Electric Company)",
     barangays: ["Lahug", "Banilad", "Guadalupe", "Mabolo", "Capitol Site", "Colon", "Labangon", "Tisa", "Banawa", "Apas", "Luz", "San Nicolas"],
     landmarks: ["Cebu IT Park", "Ayala Center Cebu", "Cebu Business Park", "Provincial Capitol", "Chong Hua Hospital", "Colon St", "Carbon Market", "Fuente Osmeña", "USJR Main"],
     coverageDescription: "Metropolitan capital grid covering IT Park BPO district, Ayala business center, Capitol medical cluster, historic Colon commercial strip, and Guadalupe/Banawa residential blocks."
@@ -48,7 +44,6 @@ export const CEBU_AREAS = [
     name: "Mandaue City",
     lat: 10.3301,
     lng: 123.9392,
-    provider: "VECO (Visayan Electric Company)",
     barangays: ["Subangdaku", "Tipolo", "Maguikay", "Bakilid", "Banilad Mandaue", "Umapad", "Looc Mandaue", "Paknaan", "Cabancalan"],
     landmarks: ["A.S. Fortuna St", "Oakridge Business Park", "SM City Cebu / NRA Access", "Cebu Int'l Port (CIP)", "San Miguel Brewery", "MC Briones Highway", "SM J Mall"],
     coverageDescription: "Industrial & commercial logistics hub covering A.S. Fortuna highway, North Reclamation Area, international shipping port access, and manufacturing industrial corridors."
@@ -57,7 +52,6 @@ export const CEBU_AREAS = [
     name: "Talisay City",
     lat: 10.2476,
     lng: 123.8489,
-    provider: "VECO (Visayan Electric Company)",
     barangays: ["Tabunok", "Lawaan I & II", "Dumlog", "Poblacion Talisay", "Bulacao Talisay", "Mohon"],
     landmarks: ["Tabunok Flyover Commercial District", "Gaisano Grand Fiesta Mall", "South Road Properties (SRP) Coastal Highway Segment", "Talisay City Hall"],
     coverageDescription: "Southern gateway covering Tabunok market trade junction, N. Bacalso Ave highway corridor, SRP coastal expressway link, and Lawaan residential developments."
@@ -66,7 +60,6 @@ export const CEBU_AREAS = [
     name: "Consolacion",
     lat: 10.3228,
     lng: 123.9642,
-    provider: "VECO (Visayan Electric Company)",
     barangays: ["Pitogo", "Poblacion Consolacion", "Tayud", "Casili", "Jugan", "Nangka"],
     landmarks: ["SM City Consolacion", "Pitogo Industrial Corridor", "Tayud Coastal Shipyard Road", "Mendero Medical Center", "Consolacion Public Market"],
     coverageDescription: "Northern suburban growth area covering Cebu North Road, SM Consolacion retail center, Mendero Hospital, and Tayud coastal maritime freight routes."
@@ -75,7 +68,6 @@ export const CEBU_AREAS = [
     name: "Liloan",
     lat: 10.4036,
     lng: 123.9886,
-    provider: "VECO (Visayan Electric Company)",
     barangays: ["Yati", "Poblacion Liloan", "Tayud Liloan", "Catarman", "San Vicente", "Calero"],
     landmarks: ["Liloan Church & Plaza", "Titan Baguio / Yati Commercial Corner", "Liloan Boardwalk", "Suba Bridge Liloan"],
     coverageDescription: "Northern coastal sector powering Yati commercial junction, Liloan municipal center, craft pottery works, and coastal residential barangays."
@@ -84,7 +76,6 @@ export const CEBU_AREAS = [
     name: "Minglanilla",
     lat: 10.2447,
     lng: 123.7869,
-    provider: "VECO (Visayan Electric Company)",
     barangays: ["Poblacion Minglanilla", "Calajoan", "Tulay", "Pakigne", "Tungkop", "Vito", "Linao"],
     landmarks: ["Minglanilla Church & Plaza", "Gaisano Grand Mall Minglanilla", "Antero Soriano Highway", "Tubod Flowing Waters Resort"],
     coverageDescription: "Southern residential & suburban connector spanning N. Bacalso south national highway from Talisay border to Naga boundary."
@@ -115,8 +106,29 @@ export const SEVERITY_OPTIONS = [
   { key: "critical", label: "Critical", weight: 4 }
 ];
 
+export const SOURCE_OPTIONS = [
+  { key: "all", label: "All Sources" },
+  { key: "official", label: "Official Advisory" },
+  { key: "community", label: "Community Report" }
+];
+
+export const VERIFICATION_STATUS_OPTIONS = [
+  { key: "all", label: "All Statuses" },
+  { key: "verified", label: "Verified Only" },
+  { key: "unverified", label: "Pending Review" },
+  { key: "official", label: "Official Advisory" }
+];
+
 export const typeMeta = (key) => INCIDENT_TYPES.find((t) => t.key === key) || INCIDENT_TYPES[0];
 export const statusMeta = (key) => STATUS_OPTIONS.find((s) => s.key === key) || STATUS_OPTIONS[0];
 export const severityMeta = (key) => SEVERITY_OPTIONS.find((s) => s.key === key) || SEVERITY_OPTIONS[1];
 export const areaCoords = (name) => CEBU_AREAS.find((a) => a.name === name) || { lat: CEBU_CENTER[0], lng: CEBU_CENTER[1] };
 export const areaDetails = (name) => CEBU_AREAS.find((a) => a.name === name || a.name.toLowerCase() === (name || "").toLowerCase());
+
+/**
+ * Returns list of barangays for an area name
+ */
+export const getBarangayListForArea = (areaName) => {
+  const area = areaDetails(areaName);
+  return area ? area.barangays : [];
+};

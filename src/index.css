@@ -29,10 +29,11 @@
     --chart-4: 280 70% 55%;
     --chart-5: 210 40% 45%;
     --radius: 0.75rem;
-    --font-heading: 'Turret Road', ui-sans-serif, system-ui, sans-serif;
-    --font-body: 'Comfortaa', ui-sans-serif, system-ui, sans-serif;
-    --font-display: 'Turret Road', ui-sans-serif, system-ui, sans-serif;
-    --font-hero: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+    --font-brand: 'Turret Road', ui-sans-serif, system-ui, sans-serif;
+    --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-hero: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     --sidebar-background: 0 0% 7%;
     --sidebar-foreground: 0 0% 96%;
