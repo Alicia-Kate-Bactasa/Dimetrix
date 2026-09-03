@@ -51,7 +51,7 @@ export default function LandingPage() {
         <p className="text-xs sm:text-sm uppercase tracking-[0.3em] text-red-500 font-hero font-bold mb-6">
           Cebu · Power Watch
         </p>
-        <h1 className="font-brand text-6xl sm:text-8xl md:text-9xl tracking-wider text-white leading-none mb-6">
+        <h1 className="font-brand font-bold text-6xl sm:text-8xl md:text-9xl tracking-wider text-white leading-none mb-6">
           DIMETRIX
         </h1>
         <p className="max-w-xl font-hero text-base sm:text-lg text-white/70 leading-relaxed">
