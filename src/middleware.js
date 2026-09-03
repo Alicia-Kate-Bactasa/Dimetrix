@@ -1,12 +1,11 @@
-import NextAuth from "next-auth";
 import { NextResponse } from "next/server";
-import { authConfig } from "@/lib/auth.config";
+import { getToken } from "next-auth/jwt";
 
-const { auth } = NextAuth(authConfig);
-
-export default auth((req) => {
+export async function middleware(req) {
   const { nextUrl } = req;
-  const isLoggedIn = !!req.auth;
+
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const isLoggedIn = !!token;
 
   const publicPaths = ["/login", "/register", "/forgot-password", "/reset-password"];
   const isPublicPath = publicPaths.some((p) => nextUrl.pathname.startsWith(p));
@@ -37,7 +36,7 @@ export default auth((req) => {
   }
 
   return NextResponse.next();
-});
+}
 
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico|manifest.json).*)"],

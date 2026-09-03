@@ -1,5 +1,5 @@
-"use client";
-import Report from "@/components/pages/Report";
+import dynamic from "next/dynamic";
+const Report = dynamic(() => import("@/components/pages/Report"), { ssr: false });
 export default function ReportPage() {
   return <Report />;
 }
