@@ -7,13 +7,13 @@ export default function ReportModal({ isOpen, onClose }) {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[1500] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+      <div className="fixed inset-0 z-[1500] bg-black/70 backdrop-blur-sm flex justify-center items-start pt-10 sm:pt-14 pb-10 p-4 sm:p-6 overflow-y-auto">
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 16 }}
+          initial={{ opacity: 0, scale: 0.98, y: 12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 16 }}
-          transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          className="relative w-full max-w-2xl bg-card border border-border rounded-[2.5rem] p-6 sm:p-9 shadow-2xl my-auto max-h-[90vh] overflow-y-auto custom-modal-scrollbar"
+          exit={{ opacity: 0, scale: 0.98, y: 12 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          className="relative w-full max-w-2xl bg-card border border-border rounded-[2.5rem] p-6 sm:p-9 shadow-2xl max-h-[85vh] overflow-y-auto custom-modal-scrollbar"
         >
           {/* Close button */}
           <button

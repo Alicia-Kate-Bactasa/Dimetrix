@@ -6,17 +6,17 @@ import { apiClient } from "@/api/apiClient";
 import { CEBU_AREAS, INCIDENT_TYPES, SEVERITY_OPTIONS, areaCoords } from "@/lib/cebuAreas";
 import LocationPicker from "@/components/LocationPicker";
 import SpammerNotice from "@/components/SpammerNotice";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
+  Button,
+  Input,
+  Label,
+  Textarea,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
-} from "@/components/ui/select";
+  SelectValue,
+} from "@/components/ui";
 
 export default function ReportIncidentForm({ onSuccess }) {
   const navigate = useNavigate();
@@ -177,15 +177,17 @@ export default function ReportIncidentForm({ onSuccess }) {
       <div className="space-y-2">
         <Label className="font-hero font-bold text-foreground">Drop a pin on the exact spot (Optional)</Label>
         <LocationPicker area={area} value={location} onChange={handleLocationChange} />
-        {location ? (
-          <p className="flex items-center gap-1 text-[11px] text-muted-foreground font-body">
-            <MapPin className="w-3.5 h-3.5 text-primary" /> Pinned at {location.lat.toFixed(5)}, {location.lng.toFixed(5)}
-          </p>
-        ) : (
-          <p className="text-[11px] text-muted-foreground font-body">
-            Selecting an area above automatically pins the map center, or tap the map to fine-tune.
-          </p>
-        )}
+        <div className="min-h-[1.25rem]">
+          {location ? (
+            <p className="flex items-center gap-1 text-[11px] text-muted-foreground font-body">
+              <MapPin className="w-3.5 h-3.5 text-primary" /> Pinned at {location.lat.toFixed(5)}, {location.lng.toFixed(5)}
+            </p>
+          ) : (
+            <p className="text-[11px] text-muted-foreground font-body">
+              Selecting an area above automatically pins the map center, or tap the map to fine-tune.
+            </p>
+          )}
+        </div>
       </div>
 
       <div className="space-y-2">

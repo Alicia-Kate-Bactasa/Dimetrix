@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui";
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';

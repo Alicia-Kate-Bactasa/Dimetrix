@@ -1,14 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, SlidersHorizontal, Megaphone, X, Zap, MapPin, Building2, Layers, Info } from "lucide-react";
+import { Search, SlidersHorizontal, Megaphone, X, Zap, MapPin, Building2, Layers } from "lucide-react";
 import { apiClient } from "@/api/apiClient";
 import { CEBU_AREAS, INCIDENT_TYPES, areaDetails } from "@/lib/cebuAreas";
 import MapView from "@/components/MapView";
 import IncidentListItem from "@/components/IncidentListItem";
 import { TypeBadge, StatusBadge, SeverityDot } from "@/components/IncidentBadge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button, Input } from "@/components/ui";
 
 const MOCK_INCIDENTS = [
   {

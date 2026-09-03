@@ -77,6 +77,14 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Prevent Radix UI scroll lock from adding right padding and shifting fixed modals */
+  body[data-scroll-locked],
+  html[data-scroll-locked],
+  body[style*="padding-right"] {
+    padding-right: 0px !important;
+    margin-right: 0px !important;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
     letter-spacing: 0.01em;
