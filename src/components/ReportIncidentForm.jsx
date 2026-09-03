@@ -347,8 +347,12 @@ export default function ReportIncidentForm({ onSuccess }) {
           <Label className="font-bold text-xs">Homes Affected (Est.)</Label>
           <Input
             type="number"
+            min={0}
             value={households}
-            onChange={(e) => setHouseholds(e.target.value)}
+            onChange={(e) => {
+              const v = e.target.value;
+              setHouseholds(v === "" || Number(v) < 0 ? "" : v);
+            }}
             placeholder="e.g. 30"
             className="h-10 rounded-xl"
           />

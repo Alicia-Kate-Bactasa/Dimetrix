@@ -69,9 +69,6 @@ export const useAuth = () => {
       if (result?.error) throw new Error(result.error);
       return result;
     },
-    loginWithGoogle: async () => {
-      await signIn("google", { callbackUrl: "/" });
-    },
     logout: async () => {
       await signOut({ callbackUrl: "/login" });
     },

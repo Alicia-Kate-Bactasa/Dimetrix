@@ -1,5 +1,4 @@
 export { default as AuthLayout } from "./AuthLayout";
-export { default as GoogleIcon } from "./GoogleIcon";
 export { TypeBadge, StatusBadge, SeverityDot } from "./IncidentBadge";
 export { default as IncidentListItem } from "./IncidentListItem";
 export { default as LocationPicker } from "./LocationPicker";
