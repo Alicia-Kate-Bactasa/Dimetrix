@@ -1,5 +1,6 @@
+"use client";
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, SlidersHorizontal, Megaphone, X, MapPin, ThumbsUp, Flag, ExternalLink } from "lucide-react";
 import { apiClient } from "@/api/apiClient";
@@ -18,7 +19,7 @@ const TABS = [
 ];
 
 export default function Home() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [incidents, setIncidents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
@@ -64,7 +65,7 @@ export default function Home() {
 
   const handleOpenReportModal = () => {
     window.dispatchEvent(new CustomEvent("open-report-modal"));
-    navigate("/?report=" + Date.now());
+    router.push("/?report=" + Date.now());
   };
 
   const handleConfirmIncident = async (id) => {

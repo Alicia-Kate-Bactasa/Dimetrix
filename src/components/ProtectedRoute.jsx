@@ -1,6 +1,6 @@
-import { Outlet } from 'react-router-dom';
-
-export default function ProtectedRoute() {
-  // Authentication disabled for frontend development - allow direct access
-  return <Outlet />;
+"use client";
+// Auth protection is handled by middleware.js
+// This component is kept for backward compatibility
+export default function ProtectedRoute({ children }) {
+  return children || null;
 }

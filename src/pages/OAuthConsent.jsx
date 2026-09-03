@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { appParams } from "@/lib/app-params";
 import { Button } from "@/components/ui";

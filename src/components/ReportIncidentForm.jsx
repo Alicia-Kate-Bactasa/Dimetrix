@@ -1,5 +1,6 @@
+"use client";
 import { useState, useMemo, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Send, CheckCircle2, AlertCircle, ThumbsUp, AlertTriangle } from "lucide-react";
 import { apiClient } from "@/api/apiClient";
@@ -29,7 +30,7 @@ import {
 const RATE_LIMIT_SECONDS = 120; // 2 minutes between reports
 
 export default function ReportIncidentForm({ onSuccess }) {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { user } = useAuth();
   
   const [area, setArea] = useState("Cebu City");
@@ -104,7 +105,7 @@ export default function ReportIncidentForm({ onSuccess }) {
       setDone(true);
       setTimeout(() => {
         if (typeof onSuccess === "function") onSuccess();
-        else navigate("/");
+        else router.push("/");
       }, 1600);
     } catch (e) {
       setErrorMsg("Failed to confirm incident. Please try again.");
@@ -169,7 +170,7 @@ export default function ReportIncidentForm({ onSuccess }) {
 
       setTimeout(() => {
         if (typeof onSuccess === "function") onSuccess();
-        else navigate("/");
+        else router.push("/");
       }, 1600);
     } catch (e) {
       setErrorMsg("Failed to submit report. Please try again.");

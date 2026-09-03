@@ -1,3 +1,4 @@
+"use client";
 import { motion, AnimatePresence } from "framer-motion";
 import { Megaphone, X, Heart, ShieldCheck } from "lucide-react";
 import ReportIncidentForm from "@/components/ReportIncidentForm";

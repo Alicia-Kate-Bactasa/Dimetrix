@@ -1,3 +1,4 @@
+"use client";
 import { useEffect } from "react";
 import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from "react-leaflet";
 import { Compass, ExternalLink, ThumbsUp } from "lucide-react";

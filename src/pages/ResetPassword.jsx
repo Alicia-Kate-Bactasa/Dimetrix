@@ -1,5 +1,7 @@
+"use client";
 import React, { useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { apiClient } from "@/api/apiClient";
 import { Button, Input, Label } from "@/components/ui";
 import { Lock, Loader2, AlertTriangle } from "lucide-react";
@@ -39,7 +41,7 @@ export default function ResetPassword() {
         title="Invalid reset link"
         subtitle="This password reset link is missing or invalid"
         footer={
-          <Link to="/forgot-password" className="text-primary font-medium hover:underline">
+          <Link href="/forgot-password" className="text-primary font-medium hover:underline">
             Request a new link
           </Link>
         }

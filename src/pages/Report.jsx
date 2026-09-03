@@ -1,13 +1,14 @@
+"use client";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 export default function Report() {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     // Redirect to home page with report modal query parameter open
-    navigate("/?report=true", { replace: true });
-  }, [navigate]);
+    router.replace("/?report=true");
+  }, [router]);
 
   return null;
 }

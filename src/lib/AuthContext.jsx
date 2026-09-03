@@ -1,111 +1,67 @@
-import React, { createContext, useState, useContext } from 'react';
+"use client";
+import { createContext, useContext } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const AuthContext = createContext();
 
-const MOCK_USER = {
-  id: 'usr-dev-01',
-  email: 'alicia@dimetrix.io',
-  full_name: 'Alicia Bactasa',
-  role: 'admin',
-  department: 'Community Outage Tracker',
-  verified: true
-};
-
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    try {
-      const saved = localStorage.getItem('dimetrix_user');
-      if (saved) return { ...MOCK_USER, ...JSON.parse(saved) };
-    } catch (e) {}
-    return MOCK_USER;
-  });
-
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const [isLoadingAuth, setIsLoadingAuth] = useState(false);
-  const [isLoadingPublicSettings, setIsLoadingPublicSettings] = useState(false);
-  const [authError, setAuthError] = useState(null);
-  const [authChecked, setAuthChecked] = useState(true);
-  const [appPublicSettings, setAppPublicSettings] = useState(null);
-
-  const checkAppState = async () => {};
-  const checkUserAuth = async () => {};
-
-  const updateUser = (data) => {
-    setUser((prev) => {
-      const updated = { ...prev, ...data };
-      try {
-        localStorage.setItem('dimetrix_user', JSON.stringify(updated));
-      } catch (e) {}
-      return updated;
-    });
-  };
-
-  const login = async (email, password) => {
-    const newUser = {
-      ...user,
-      id: 'usr-' + Date.now(),
-      email: email || 'user@dimetrix.io',
-      full_name: email ? email.split('@')[0] : 'Alicia Bactasa',
-      role: 'admin'
-    };
-    setUser(newUser);
-    setIsAuthenticated(true);
-    try {
-      localStorage.setItem('dimetrix_user', JSON.stringify(newUser));
-    } catch (e) {}
-    return newUser;
-  };
-
-  const loginWithGoogle = async () => {
-    const newUser = {
-      ...user,
-      id: 'usr-google-' + Date.now(),
-      email: 'alicia.google@dimetrix.io',
-      full_name: 'Alicia Bactasa (Google)',
-      role: 'admin'
-    };
-    setUser(newUser);
-    setIsAuthenticated(true);
-    try {
-      localStorage.setItem('dimetrix_user', JSON.stringify(newUser));
-    } catch (e) {}
-    return newUser;
-  };
-
-  const logout = () => {
-    localStorage.removeItem('dimetrix_user');
-    setUser(null);
-    setIsAuthenticated(false);
-  };
-
-  const navigateToLogin = () => {};
-
-  return (
-    <AuthContext.Provider value={{ 
-      user, 
-      isAuthenticated: true, 
-      isLoadingAuth: false,
-      isLoadingPublicSettings: false,
-      authError: null,
-      appPublicSettings,
-      authChecked: true,
-      updateUser,
-      login,
-      loginWithGoogle,
-      logout,
-      navigateToLogin,
-      checkUserAuth,
-      checkAppState
-    }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  // SessionProvider is in Providers.jsx, this is just a compat wrapper
+  return <AuthContext.Provider value={{}}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  const user = session?.user
+    ? {
+        id: session.user.id,
+        email: session.user.email,
+        full_name: session.user.name || session.user.email?.split("@")[0] || "User",
+        role: session.user.role || "user",
+        department: "Community Outage Tracker",
+        verified: true,
+        image: session.user.image,
+      }
+    : null;
+
+  return {
+    user,
+    isAuthenticated: status === "authenticated",
+    isLoadingAuth: status === "loading",
+    isLoadingPublicSettings: false,
+    authError: null,
+    appPublicSettings: null,
+    authChecked: status !== "loading",
+    updateUser: async (data) => {
+      try {
+        await fetch("/api/user", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+      } catch (e) {
+        console.warn("Failed to update user", e);
+      }
+    },
+    login: async (email, password) => {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+      if (result?.error) throw new Error(result.error);
+      return result;
+    },
+    loginWithGoogle: async () => {
+      await signIn("google", { callbackUrl: "/" });
+    },
+    logout: async () => {
+      await signOut({ callbackUrl: "/login" });
+    },
+    navigateToLogin: () => router.push("/login"),
+    checkUserAuth: async () => {},
+    checkAppState: async () => {},
+  };
 };

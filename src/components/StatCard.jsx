@@ -1,3 +1,4 @@
+"use client";
 import { motion } from "framer-motion";
 
 export default function StatCard({ label, value, sub, accent = false, icon: Icon, delay = 0 }) {

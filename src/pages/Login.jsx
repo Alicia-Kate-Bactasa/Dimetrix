@@ -1,5 +1,7 @@
+"use client";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
 import { Button, Input, Label } from "@/components/ui";
 import { LogIn, Mail, Lock, Loader2 } from "lucide-react";
@@ -13,7 +15,7 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { login, loginWithGoogle } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const returnTo = safeReturnTo() || "/";
 
@@ -60,7 +62,7 @@ export default function Login() {
         <>
           Don't have an account?{" "}
           <Link
-            to={"/register" + (returnTo !== "/" ? "?returnTo=" + encodeURIComponent(returnTo) : "")}
+            href={"/register" + (returnTo !== "/" ? "?returnTo=" + encodeURIComponent(returnTo) : "")}
             className="text-primary font-medium hover:underline"
           >
             Create one
@@ -114,7 +116,7 @@ export default function Login() {
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="password">Password</Label>
-            <Link to="/forgot-password" className="text-xs text-primary hover:underline">
+            <Link href="/forgot-password" className="text-xs text-primary hover:underline">
               Forgot password?
             </Link>
           </div>

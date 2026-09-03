@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+}
+
+// ─── Auth.js Models ───────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          String    @default("user")
+  accounts      Account[]
+  sessions      Session[]
+  incidents     Incident[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── App Models ───────────────────────────────────────
+
+model Incident {
+  id                 String   @id @default(cuid())
+  title              String
+  description        String?  @db.Text
+  type               String   // power_outage, exploded_transformer, scheduled_brownout, voltage_fluctuation, fallen_pole, other
+  status             String   @default("active") // active, ongoing, scheduled, restored
+  severity           String   @default("medium") // low, medium, high, critical
+  area               String
+  barangay           String?
+  provider           String?
+  sourceType         String   @default("community") // community, official
+  verificationStatus String   @default("unverified") // unverified, verified, official
+  sourceUrl          String?
+  reporterName       String?
+  affectedHouseholds Int?
+  verified           Boolean  @default(false)
+  confirmationsCount Int      @default(1)
+  flagCount          Int      @default(0)
+  latitude           Float?
+  longitude          Float?
+  startTime          DateTime @default(now())
+  userId             String?
+  user               User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}

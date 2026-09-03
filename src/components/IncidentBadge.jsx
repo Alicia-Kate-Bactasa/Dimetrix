@@ -1,3 +1,4 @@
+"use client";
 import { typeMeta } from "@/lib/cebuAreas";
 
 /**

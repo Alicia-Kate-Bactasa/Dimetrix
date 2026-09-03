@@ -1,5 +1,7 @@
+"use client";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
 import { Button, Input, Label, InputOTP, InputOTPGroup, InputOTPSlot, toast } from "@/components/ui";
 import { UserPlus, Mail, Lock, Loader2 } from "lucide-react";
@@ -17,7 +19,7 @@ export default function Register() {
   const [otpCode, setOtpCode] = useState("");
 
   const { login, loginWithGoogle } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
   const returnTo = safeReturnTo() || "/";
 
   const handleSubmit = async (e) => {
@@ -31,7 +33,7 @@ export default function Register() {
     try {
       await login(email, password);
       if (returnTo.startsWith('/')) {
-        navigate(returnTo);
+        router.push(returnTo);
       } else {
         window.location.href = returnTo;
       }
@@ -48,7 +50,7 @@ export default function Register() {
     try {
       await login(email, password);
       if (returnTo.startsWith('/')) {
-        navigate(returnTo);
+        router.push(returnTo);
       } else {
         window.location.href = returnTo;
       }
@@ -72,7 +74,7 @@ export default function Register() {
     try {
       await loginWithGoogle();
       if (returnTo.startsWith('/')) {
-        navigate(returnTo);
+        router.push(returnTo);
       } else {
         window.location.href = returnTo;
       }
@@ -146,7 +148,7 @@ export default function Register() {
         <>
           Already have an account?{" "}
           <Link
-            to={"/login" + (returnTo !== "/" ? "?returnTo=" + encodeURIComponent(returnTo) : "")}
+            href={"/login" + (returnTo !== "/" ? "?returnTo=" + encodeURIComponent(returnTo) : "")}
             className="text-primary font-medium hover:underline"
           >
             Log in
