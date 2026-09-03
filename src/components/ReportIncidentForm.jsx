@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Send, CheckCircle2, AlertCircle, ThumbsUp, AlertTriangle } from "lucide-react";
@@ -13,8 +14,16 @@ import {
   getBarangayListForArea
 } from "@/lib/cebuAreas";
 import { findDuplicateIncident } from "@/lib/duplicateDetection";
-import LocationPicker from "@/components/LocationPicker";
 import SpammerNotice from "@/components/SpammerNotice";
+
+// leaflet touches `window` at import time, so it must never load in the server
+// module graph — otherwise /dashboard (which statically pulls in this form via
+// the shell/dashboard layout) crashes with "window is not defined" during SSR
+// and the post-login navigation aborts, leaving the user stuck on /login.
+const LocationPicker = dynamic(() => import("@/components/LocationPicker"), {
+  ssr: false,
+  loading: () => <div className="h-48 w-full rounded-lg border border-border bg-muted animate-pulse" />,
+});
 import {
   Button,
   Input,
