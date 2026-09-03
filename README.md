@@ -25,6 +25,7 @@
 ## Website
 
 **Checkout** and **explore** the website here: dimetrix.vercel.app 
+[View Live Demo](https://dimetrix.vercel.app/)
 
 ## Credits
 
