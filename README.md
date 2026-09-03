@@ -22,9 +22,9 @@
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 ![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=for-the-badge&logo=leaflet&logoColor=white)
 
-## Screenshots
+## Website
 
-See the [`screenshots/`](./screenshots) folder for website screenshots.
+**Checkout** and **explore** the website here: dimetrix.vercel.app 
 
 ## Credits
 
