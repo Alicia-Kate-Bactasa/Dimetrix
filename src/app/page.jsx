@@ -1,19 +1,16 @@
 import Link from "next/link";
-import { Zap, MapPin, BarChart3, ShieldCheck } from "lucide-react";
+import Image from "next/image";
 
 const features = [
   {
-    icon: MapPin,
     title: "Live Outage Map",
     desc: "See active outages, brownouts, and transformer incidents across Metro Cebu in real time.",
   },
   {
-    icon: Zap,
     title: "Community Reports",
     desc: "Residents pin outages on the map with precise locations, descriptions, and severity.",
   },
   {
-    icon: BarChart3,
     title: "Grid Analytics",
     desc: "Up-to-date statistics and trends for the regions served by MECO and VECO.",
   },
@@ -25,24 +22,28 @@ export default function LandingPage() {
       {/* Top bar with login/signup on the right */}
       <header className="w-full bg-primary text-primary-foreground">
         <div className="mx-auto w-full max-w-6xl px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <span className="grid place-items-center w-9 h-9 rounded-xl bg-white text-primary">
-              <Zap className="w-5 h-5" strokeWidth={2.5} />
-            </span>
-            <span className="font-brand text-2xl tracking-wider text-white">
+          <div className="flex items-center">
+            <Image
+              src="/dimetrixLogo.svg"
+              alt="Dimetrix Logo"
+              width={80}
+              height={40}
+              className="w-20 h-10 object-contain"
+            />
+            <span className="wallpoet-regular text-2xl tracking-wider text-white">
               DIMETRIX
             </span>
           </div>
           <div className="flex items-center gap-3">
             <Link
               href="/login"
-              className="px-5 h-11 rounded-xl font-hero font-bold text-sm text-white/90 hover:text-white border border-white/30 hover:border-white/60 transition-colors grid place-items-center"
+              className="px-5 h-11 rounded-full font-hero font-bold text-sm text-white/90 hover:text-white border border-white/30 hover:border-white/60 transition-colors grid place-items-center"
             >
               Log in
             </Link>
             <Link
               href="/register"
-              className="px-5 h-11 rounded-xl font-hero font-bold text-sm bg-white text-primary hover:bg-white/90 transition-colors grid place-items-center"
+              className="px-5 h-11 rounded-full font-hero font-bold text-sm bg-white text-primary hover:bg-white/90 transition-colors grid place-items-center"
             >
               Sign up
             </Link>
@@ -51,11 +52,11 @@ export default function LandingPage() {
       </header>
 
       {/* Hero */}
-      <section className="mx-auto w-full max-w-6xl px-6 flex-1 flex flex-col items-center justify-center text-center py-16">
+      <section className="mx-auto w-full max-w-6xl px-6 flex-[2] flex flex-col items-center justify-center text-center pt-16 pb-4">
         <p className="text-xs sm:text-sm uppercase tracking-[0.3em] text-black font-hero font-bold mb-6">
           Cebu · Power Watch
         </p>
-        <h1 className="font-brand font-normal text-6xl sm:text-8xl md:text-9xl tracking-wider text-primary leading-none mb-6">
+        <h1 className="wallpoet-regular font-normal text-6xl sm:text-8xl md:text-9xl tracking-wider text-primary leading-none mb-6">
           DIMETRIX
         </h1>
         <p className="max-w-xl font-hero text-base sm:text-lg text-foreground/70 leading-relaxed">
@@ -66,13 +67,13 @@ export default function LandingPage() {
         <div className="flex flex-col sm:flex-row items-center gap-3 mt-10">
           <Link
             href="/register"
-            className="px-8 h-12 rounded-xl bg-primary text-primary-foreground font-hero font-bold text-sm hover:bg-primary/90 transition-colors grid place-items-center min-w-[180px]"
+            className="px-8 h-12 rounded-full bg-primary text-primary-foreground font-hero font-bold text-sm hover:bg-primary/90 transition-colors grid place-items-center min-w-[180px]"
           >
             Get Started
           </Link>
           <Link
             href="/login"
-            className="px-8 h-12 rounded-xl border border-foreground/20 text-foreground font-hero font-bold text-sm hover:bg-foreground/5 transition-colors grid place-items-center min-w-[180px]"
+            className="px-8 h-12 rounded-full border border-foreground/20 text-foreground font-hero font-bold text-sm hover:bg-foreground/5 transition-colors grid place-items-center min-w-[180px]"
           >
             Track an Outage
           </Link>
@@ -80,23 +81,20 @@ export default function LandingPage() {
       </section>
 
       {/* Feature cards */}
-      <section className="mx-auto w-full max-w-6xl px-6 pb-16 grid gap-4 sm:grid-cols-3">
-        {features.map(({ icon: Icon, title, desc }) => (
-          <div
-            key={title}
-            className="rounded-2xl border border-foreground/10 bg-foreground/5 p-6"
-          >
-            <Icon className="w-6 h-6 text-primary mb-3" strokeWidth={2} />
-            <h3 className="font-hero font-bold text-foreground text-sm mb-1.5">{title}</h3>
-            <p className="font-hero text-sm text-foreground/60 leading-relaxed">{desc}</p>
-          </div>
-        ))}
+      <section className="mx-auto w-full max-w-6xl px-6 pb-16 flex-1">
+        <div className="flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-foreground/10">
+          {features.map(({ title, desc }) => (
+            <div
+              key={title}
+              className="p-6 flex-1 text-center"
+            >
+              <h3 className="font-hero font-bold text-foreground text-sm mb-1.5">{title}</h3>
+              <p className="font-hero text-sm text-foreground/60 leading-relaxed">{desc}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-foreground/10 py-6 text-center font-hero text-xs text-foreground/40">
-        Map tiles © OpenStreetMap contributors · Icons by Lucide
-      </footer>
     </main>
   );
 }

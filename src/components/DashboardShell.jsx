@@ -1,9 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Zap, Map as MapIcon, BarChart3, Megaphone, LogOut, Edit3, ShieldCheck } from "lucide-react";
+import { Map as MapIcon, BarChart3, Megaphone, LogOut, Edit3, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
 import ReportModal from "@/components/ReportModal";
 import ProfileModal from "@/components/ProfileModal";
@@ -52,13 +53,19 @@ export default function DashboardShell({ children }) {
             initial={{ rotate: -8, scale: 0.8 }}
             animate={{ rotate: 0, scale: 1 }}
             transition={{ type: "spring", stiffness: 200, damping: 12 }}
-            className="relative grid place-items-center w-11 h-11 rounded-2xl bg-primary text-primary-foreground shadow-xl shadow-primary/30"
+            className="relative grid place-items-center w-11 h-11 rounded-full bg-primary text-primary-foreground shadow-xl shadow-primary/30"
           >
-            <Zap className="w-6 h-6" strokeWidth={2.5} />
-            <span className="absolute inset-0 rounded-2xl ring-2 ring-primary/40 animate-pulse-ring" />
+            <Image
+              src="/dimetrixLogo.svg"
+              alt="Dimetrix Logo"
+              width={28}
+              height={28}
+              className="w-7 h-7"
+            />
+            <span className="absolute inset-0 rounded-full ring-2 ring-primary/40 animate-pulse-ring" />
           </motion.span>
           <div className="leading-none space-y-1">
-            <span className="block font-brand text-2xl sm:text-3xl tracking-wider text-white font-normal">DIMETRIX</span>
+            <span className="block wallpoet-regular text-2xl sm:text-3xl tracking-wider text-white font-normal">DIMETRIX</span>
             <span className="block font-body text-[10px] sm:text-[11px] text-white/60 tracking-[0.2em] uppercase font-normal">Cebu · Power Watch</span>
           </div>
         </Link>

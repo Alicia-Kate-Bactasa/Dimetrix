@@ -1,7 +1,14 @@
 import "@/app/globals.css";
 import Providers from "@/components/Providers";
+import { Wallpoet } from "next/font/google";
 
 export const dynamic = "force-dynamic";
+
+const wallpoet = Wallpoet({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-wallpoet",
+});
 
 export const metadata = {
   title: "Dimetrix — Cebu Power Outage Map & Analytics",
@@ -14,7 +21,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={wallpoet.variable}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

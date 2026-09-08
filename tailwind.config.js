@@ -68,7 +68,7 @@ module.exports = {
         }
       },
       fontFamily: {
-        brand: ['var(--font-brand)'],
+        brand: ['Wallpoet', 'sans-serif'],
         heading: ['var(--font-heading)'],
         body: ['var(--font-body)'],
         display: ['var(--font-display)'],
