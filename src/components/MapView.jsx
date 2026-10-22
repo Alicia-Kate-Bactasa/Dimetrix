@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from "react-leaflet";
-import { Compass, ExternalLink, ThumbsUp } from "lucide-react";
+import { Compass, ExternalLink, ThumbsUp, Check } from "lucide-react";
 import "leaflet/dist/leaflet.css";
 import { CEBU_CENTER, CEBU_BOUNDS, typeMeta } from "@/lib/cebuAreas";
 import { TypeBadge, StatusBadge } from "@/components/IncidentBadge";
@@ -38,12 +38,13 @@ function ResetButton() {
 export default function MapView({ incidents = [], selected, onSelect, onConfirmIncident, className = "" }) {
   const handleQuickConfirm = async (inc, e) => {
     e.stopPropagation();
+    if (inc.has_confirmed) return;
     try {
-      await apiClient.entities.Incident.addConfirmation(inc.id);
-      if (onConfirmIncident) onConfirmIncident(inc.id);
+      const updated = await apiClient.entities.Incident.addConfirmation(inc.id);
+      if (onConfirmIncident) onConfirmIncident(inc.id, updated);
       window.dispatchEvent(new CustomEvent("dimetrix-incident-updated", { detail: { id: inc.id } }));
     } catch (err) {
-      console.warn("Failed to add confirmation", err);
+      console.warn("Failed to add confirmation", err?.message || err);
     }
   };
 
@@ -129,9 +130,22 @@ export default function MapView({ incidents = [], selected, onSelect, onConfirmI
                   {inc.status !== "restored" && (
                     <button
                       onClick={(e) => handleQuickConfirm(inc, e)}
-                      className="w-full mt-1 py-1.5 px-2 rounded-lg bg-primary/40 hover:bg-primary/60 text-white font-bold text-xs border border-primary/50 flex items-center justify-center gap-1 transition-colors"
+                      disabled={inc.has_confirmed}
+                      className={`w-full mt-1 py-1.5 px-2 rounded-lg font-bold text-xs border flex items-center justify-center gap-1 transition-colors ${
+                        inc.has_confirmed
+                          ? "bg-emerald-600/40 border-emerald-500/60 text-emerald-100 cursor-not-allowed"
+                          : "bg-primary/40 hover:bg-primary/60 text-white border-primary/50"
+                      }`}
                     >
-                      <ThumbsUp className="w-3.5 h-3.5" /> Confirm Outage (+1)
+                      {inc.has_confirmed ? (
+                        <>
+                          <Check className="w-3.5 h-3.5" /> Confirmed (+1)
+                        </>
+                      ) : (
+                        <>
+                          <ThumbsUp className="w-3.5 h-3.5" /> Confirm Outage (+1)
+                        </>
+                      )}
                     </button>
                   )}
                 </div>

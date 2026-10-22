@@ -27,14 +27,48 @@ export async function POST(request, { params }) {
       return NextResponse.json({ error: "Incident not found" }, { status: 404 });
     }
 
-    const incident = await prisma.incident.update({
-      where: { id },
-      data: {
-        flagCount: { increment: 1 },
+    // Check if user already flagged this incident
+    const alreadyFlagged = await prisma.incidentFlag.findUnique({
+      where: {
+        incidentId_userId: {
+          incidentId: id,
+          userId: session.user.id,
+        },
       },
     });
 
-    return NextResponse.json(toSnake(incident));
+    if (alreadyFlagged) {
+      return NextResponse.json(
+        { error: "You have already flagged this report." },
+        { status: 400 }
+      );
+    }
+
+    let reason = "False Report";
+    try {
+      const body = await request.json();
+      if (body?.reason) reason = String(body.reason).slice(0, 200);
+    } catch (_) {}
+
+    const [_, incident] = await prisma.$transaction([
+      prisma.incidentFlag.create({
+        data: {
+          incidentId: id,
+          userId: session.user.id,
+          reason,
+        },
+      }),
+      prisma.incident.update({
+        where: { id },
+        data: {
+          flagCount: { increment: 1 },
+        },
+      }),
+    ]);
+
+    const serialized = toSnake(incident);
+    serialized.has_flagged = true;
+    return NextResponse.json(serialized);
   } catch (error) {
     console.error("Flag incident error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

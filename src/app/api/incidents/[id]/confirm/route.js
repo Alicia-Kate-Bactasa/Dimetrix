@@ -27,14 +27,41 @@ export async function POST(request, { params }) {
       return NextResponse.json({ error: "Incident not found" }, { status: 404 });
     }
 
-    const incident = await prisma.incident.update({
-      where: { id },
-      data: {
-        confirmationsCount: { increment: 1 },
+    // Check if user already confirmed this incident
+    const alreadyConfirmed = await prisma.incidentConfirmation.findUnique({
+      where: {
+        incidentId_userId: {
+          incidentId: id,
+          userId: session.user.id,
+        },
       },
     });
 
-    return NextResponse.json(toSnake(incident));
+    if (alreadyConfirmed) {
+      return NextResponse.json(
+        { error: "You have already confirmed this outage report." },
+        { status: 400 }
+      );
+    }
+
+    const [_, incident] = await prisma.$transaction([
+      prisma.incidentConfirmation.create({
+        data: {
+          incidentId: id,
+          userId: session.user.id,
+        },
+      }),
+      prisma.incident.update({
+        where: { id },
+        data: {
+          confirmationsCount: { increment: 1 },
+        },
+      }),
+    ]);
+
+    const serialized = toSnake(incident);
+    serialized.has_confirmed = true;
+    return NextResponse.json(serialized);
   } catch (error) {
     console.error("Confirm incident error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
