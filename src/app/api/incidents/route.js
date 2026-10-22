@@ -7,11 +7,31 @@ import { rateLimit } from "@/lib/rate-limit";
 
 export async function GET() {
   try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
     const incidents = await prisma.incident.findMany({
       orderBy: { createdAt: "desc" },
       take: 200,
+      include: userId
+        ? {
+            confirmations: { where: { userId }, select: { id: true } },
+            flags: { where: { userId }, select: { id: true } },
+          }
+        : undefined,
     });
-    return NextResponse.json(toSnake(incidents));
+
+    const serialized = incidents.map((inc) => {
+      const { confirmations, flags, ...rest } = inc;
+      const snake = toSnake(rest);
+      if (userId) {
+        snake.has_confirmed = (confirmations?.length || 0) > 0;
+        snake.has_flagged = (flags?.length || 0) > 0;
+      }
+      return snake;
+    });
+
+    return NextResponse.json(serialized);
   } catch (error) {
     console.error("Fetch incidents error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
@@ -45,10 +65,18 @@ export async function POST(request) {
       data: {
         ...result.data,
         userId: session.user.id,
+        confirmations: {
+          create: {
+            userId: session.user.id,
+          },
+        },
       },
     });
 
-    return NextResponse.json(toSnake(incident), { status: 201 });
+    const resObj = toSnake(incident);
+    resObj.has_confirmed = true;
+    resObj.has_flagged = false;
+    return NextResponse.json(resObj, { status: 201 });
   } catch (error) {
     console.error("Create incident error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

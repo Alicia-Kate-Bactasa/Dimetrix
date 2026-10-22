@@ -43,6 +43,10 @@ export async function PATCH(request, { params }) {
       return NextResponse.json({ error: "Incident not found" }, { status: 404 });
     }
 
+    if (result.data.flagCount === 0) {
+      await prisma.incidentFlag.deleteMany({ where: { incidentId: id } });
+    }
+
     const incident = await prisma.incident.update({
       where: { id },
       data: result.data,

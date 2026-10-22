@@ -178,6 +178,7 @@ export default function Admin() {
         setAdvTitle("");
         setAdvDescription("");
         setAdvSourceUrl("");
+        setAdvHouseholds("");
         loadIncidents();
       }, 1500);
     } catch (e) {
@@ -348,6 +349,47 @@ export default function Admin() {
                   placeholder="Official details (affected areas, estimated restoration time)..."
                   className="rounded-xl"
                   rows={2}
+                />
+              </div>
+
+              <div className="space-y-1">
+                <Label className="font-bold text-xs">Homes Affected (Est.)</Label>
+                <Input
+                  type="number"
+                  min={0}
+                  step={1}
+                  value={advHouseholds}
+                  onKeyDown={(e) => {
+                    if (["-", "+", "e", "E", ".", ","].includes(e.key)) {
+                      e.preventDefault();
+                    }
+                  }}
+                  onPaste={(e) => {
+                    const text = e.clipboardData.getData("text");
+                    if (/[^0-9]/.test(text)) {
+                      e.preventDefault();
+                      const digits = text.replace(/\D/g, "");
+                      if (digits) {
+                        setAdvHouseholds(String(Math.max(0, parseInt(digits, 10))));
+                      }
+                    }
+                  }}
+                  onChange={(e) => {
+                    const raw = e.target.value;
+                    if (raw === "") {
+                      setAdvHouseholds("");
+                      return;
+                    }
+                    const digits = raw.replace(/\D/g, "");
+                    if (!digits) {
+                      setAdvHouseholds("");
+                      return;
+                    }
+                    const num = Math.max(0, parseInt(digits, 10));
+                    setAdvHouseholds(String(num));
+                  }}
+                  placeholder="e.g. 500"
+                  className="h-10 rounded-xl"
                 />
               </div>
 

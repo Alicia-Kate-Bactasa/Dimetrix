@@ -20,6 +20,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
   incidents     Incident[]
+  confirmations IncidentConfirmation[]
+  flags         IncidentFlag[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
@@ -83,6 +85,37 @@ model Incident {
   startTime          DateTime @default(now())
   userId             String?
   user               User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  confirmations      IncidentConfirmation[]
+  flags              IncidentFlag[]
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+}
+
+model IncidentConfirmation {
+  id         String   @id @default(cuid())
+  incidentId String
+  userId     String
+  createdAt  DateTime @default(now())
+
+  incident Incident @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([incidentId, userId])
+  @@index([userId])
+  @@index([incidentId])
+}
+
+model IncidentFlag {
+  id         String   @id @default(cuid())
+  incidentId String
+  userId     String
+  reason     String?
+  createdAt  DateTime @default(now())
+
+  incident Incident @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([incidentId, userId])
+  @@index([userId])
+  @@index([incidentId])
 }

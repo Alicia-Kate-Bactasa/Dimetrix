@@ -13,16 +13,40 @@ export const createIncidentSchema = z.object({
   verificationStatus: z.enum(["unverified", "verified", "official"]).default("unverified"),
   sourceUrl: z.string().url().optional().nullable().or(z.literal("")),
   reporterName: z.string().optional().nullable(),
-  affectedHouseholds: z.number().int().min(0).optional().nullable(),
+  affectedHouseholds: z
+    .preprocess(
+      (val) => (val === "" || val === null || val === undefined ? null : Number(val)),
+      z
+        .number({ invalid_type_error: "Homes affected must be a valid number" })
+        .int("Homes affected must be a whole number")
+        .min(0, "Homes affected cannot be negative")
+        .max(10_000_000, "Homes affected exceeds reasonable limit")
+    )
+    .optional()
+    .nullable(),
   verified: z.boolean().default(false),
+  confirmationsCount: z
+    .preprocess(
+      (val) => (val === "" || val === null || val === undefined ? 1 : Number(val)),
+      z.number().int().min(1, "Confirmations count must be at least 1")
+    )
+    .default(1),
   latitude: z.number().min(-90).max(90).optional().nullable(),
   longitude: z.number().min(-180).max(180).optional().nullable(),
   startTime: z.string().datetime().optional(),
 });
 
 export const updateIncidentSchema = createIncidentSchema.partial().extend({
-  confirmationsCount: z.number().int().min(0).optional(),
-  flagCount: z.number().int().min(0).optional(),
+  confirmationsCount: z
+    .preprocess(
+      (val) => (val === "" || val === null || val === undefined ? undefined : Number(val)),
+      z.number().int().min(1, "Confirmations must be at least 1").optional()
+    ),
+  flagCount: z
+    .preprocess(
+      (val) => (val === "" || val === null || val === undefined ? undefined : Number(val)),
+      z.number().int().min(0, "Flag count cannot be negative").optional()
+    ),
 });
 
 export const registerSchema = z.object({

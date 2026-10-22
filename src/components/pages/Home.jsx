@@ -2,13 +2,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, SlidersHorizontal, Megaphone, X, MapPin, ThumbsUp, Flag, ExternalLink } from "lucide-react";
+import { Search, SlidersHorizontal, Megaphone, X, MapPin, ThumbsUp, Flag, ExternalLink, Check } from "lucide-react";
 import { apiClient } from "@/api/apiClient";
+import { useAuth } from "@/lib/AuthContext";
 import { CEBU_AREAS, INCIDENT_TYPES, SOURCE_OPTIONS } from "@/lib/cebuAreas";
 import MapView from "@/components/MapView";
 import IncidentListItem from "@/components/IncidentListItem";
 import { TypeBadge, StatusBadge, SourceBadge } from "@/components/IncidentBadge";
-import { Button, Input } from "@/components/ui";
+import { Button, Input, useToast } from "@/components/ui";
 
 const TABS = [
   { key: "all", label: "Everything" },
@@ -20,9 +21,12 @@ const TABS = [
 
 export default function Home() {
   const router = useRouter();
+  const { toast } = useToast();
+  const { user } = useAuth();
   const [incidents, setIncidents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
+  const [actionLoading, setActionLoading] = useState(false);
   const [query, setQuery] = useState("");
   
   // Filters
@@ -68,27 +72,109 @@ export default function Home() {
     router.push("/dashboard?report=" + Date.now());
   };
 
-  const handleConfirmIncident = async (id) => {
+  const handleConfirmIncident = async (id, updatedData) => {
+    if (!user) {
+      toast({
+        title: "Sign in required",
+        description: "Please sign in to confirm this outage report.",
+      });
+      router.push("/login");
+      return;
+    }
+
+    const current = incidents.find((i) => i.id === id);
+    if (current?.has_confirmed) {
+      toast({
+        title: "Already confirmed",
+        description: "You have already confirmed this outage report.",
+      });
+      return;
+    }
+
+    if (updatedData) {
+      setIncidents((prev) => prev.map((i) => (i.id === id ? updatedData : i)));
+      if (selected?.id === id) setSelected(updatedData);
+      toast({
+        title: "Outage confirmed",
+        description: "Thank you for confirming this report (+1).",
+      });
+      return;
+    }
+
+    setActionLoading(true);
     try {
       const updated = await apiClient.entities.Incident.addConfirmation(id);
       if (updated) {
         setIncidents((prev) => prev.map((i) => (i.id === id ? updated : i)));
         if (selected?.id === id) setSelected(updated);
+        toast({
+          title: "Outage confirmed",
+          description: "Thank you for confirming this report (+1).",
+        });
       }
     } catch (e) {
-      console.warn("Could not add confirmation", e);
+      const isAlready = e?.message?.toLowerCase().includes("already confirmed");
+      if (isAlready) {
+        setIncidents((prev) =>
+          prev.map((i) => (i.id === id ? { ...i, has_confirmed: true } : i))
+        );
+        if (selected?.id === id) setSelected((prev) => ({ ...prev, has_confirmed: true }));
+      }
+      toast({
+        title: isAlready ? "Already confirmed" : "Could not confirm",
+        description: e.message || "Failed to confirm outage report.",
+        variant: isAlready ? "default" : "destructive",
+      });
+    } finally {
+      setActionLoading(false);
     }
   };
 
   const handleFlagIncident = async (id) => {
+    if (!user) {
+      toast({
+        title: "Sign in required",
+        description: "Please sign in to flag false reports.",
+      });
+      router.push("/login");
+      return;
+    }
+
+    const current = incidents.find((i) => i.id === id);
+    if (current?.has_flagged) {
+      toast({
+        title: "Already flagged",
+        description: "You have already flagged this report.",
+      });
+      return;
+    }
+
+    setActionLoading(true);
     try {
       const updated = await apiClient.entities.Incident.flagIncident(id, "False Report");
       if (updated) {
         setIncidents((prev) => prev.map((i) => (i.id === id ? updated : i)));
         if (selected?.id === id) setSelected(updated);
+        toast({
+          title: "Report flagged",
+          description: "Thank you for flagging. Our moderators will review it.",
+        });
       }
     } catch (e) {
-      console.warn("Could not flag incident", e);
+      const isAlready = e?.message?.toLowerCase().includes("already flagged");
+      if (isAlready) {
+        setIncidents((prev) =>
+          prev.map((i) => (i.id === id ? { ...i, has_flagged: true } : i))
+        );
+        if (selected?.id === id) setSelected((prev) => ({ ...prev, has_flagged: true }));
+      }
+      toast({
+        title: isAlready ? "Already flagged" : "Could not flag report",
+        description: e.message || "Failed to flag incident.",
+        variant: isAlready ? "default" : "destructive",
+      });
+    } finally {
+      setActionLoading(false);
     }
   };
 
@@ -318,20 +404,46 @@ export default function Home() {
               {selected.status !== "restored" && (
                 <Button
                   size="sm"
+                  disabled={selected.has_confirmed || actionLoading}
                   onClick={() => handleConfirmIncident(selected.id)}
-                  className="h-10 font-bold text-xs rounded-xl"
+                  className={`h-10 font-bold text-xs rounded-xl ${
+                    selected.has_confirmed
+                      ? "bg-emerald-600/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 hover:bg-emerald-600/20 cursor-not-allowed"
+                      : ""
+                  }`}
                 >
-                  <ThumbsUp className="w-3.5 h-3.5 mr-1" /> Confirm (+1)
+                  {selected.has_confirmed ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 mr-1" /> Confirmed
+                    </>
+                  ) : (
+                    <>
+                      <ThumbsUp className="w-3.5 h-3.5 mr-1" /> Confirm (+1)
+                    </>
+                  )}
                 </Button>
               )}
 
               <Button
                 variant="outline"
                 size="sm"
+                disabled={selected.has_flagged || actionLoading}
                 onClick={() => handleFlagIncident(selected.id)}
-                className="h-10 font-bold text-xs rounded-xl text-rose-500 hover:bg-rose-500/10 border-rose-500/30"
+                className={`h-10 font-bold text-xs rounded-xl ${
+                  selected.has_flagged
+                    ? "text-muted-foreground border-border bg-muted/40 cursor-not-allowed"
+                    : "text-rose-500 hover:bg-rose-500/10 border-rose-500/30"
+                }`}
               >
-                <Flag className="w-3.5 h-3.5 mr-1" /> Flag False
+                {selected.has_flagged ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 mr-1" /> Flagged False
+                  </>
+                ) : (
+                  <>
+                    <Flag className="w-3.5 h-3.5 mr-1" /> Flag False
+                  </>
+                )}
               </Button>
             </div>
           </motion.div>

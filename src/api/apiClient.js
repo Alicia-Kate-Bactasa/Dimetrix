@@ -41,7 +41,16 @@ export const apiClient = {
         const res = await fetch(`${API_BASE}/incidents/${id}/confirm`, {
           method: "POST",
         });
-        if (!res.ok) throw new Error("Failed to confirm incident");
+        if (!res.ok) {
+          let msg = "Failed to confirm incident";
+          try {
+            const errData = await res.json();
+            if (errData?.error) msg = errData.error;
+          } catch (_) {}
+          const error = new Error(msg);
+          error.status = res.status;
+          throw error;
+        }
         return res.json();
       },
       flagIncident: async (id, reason = "False Report") => {
@@ -50,7 +59,16 @@ export const apiClient = {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ reason }),
         });
-        if (!res.ok) throw new Error("Failed to flag incident");
+        if (!res.ok) {
+          let msg = "Failed to flag incident";
+          try {
+            const errData = await res.json();
+            if (errData?.error) msg = errData.error;
+          } catch (_) {}
+          const error = new Error(msg);
+          error.status = res.status;
+          throw error;
+        }
         return res.json();
       },
       purgeRestored: async () => {

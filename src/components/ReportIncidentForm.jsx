@@ -106,6 +106,10 @@ export default function ReportIncidentForm({ onSuccess }) {
 
   const handleConfirmDuplicate = async () => {
     if (!duplicateIncident) return;
+    if (duplicateIncident.has_confirmed) {
+      setErrorMsg("You have already confirmed this outage report.");
+      return;
+    }
     setSubmitting(true);
     try {
       await apiClient.entities.Incident.addConfirmation(duplicateIncident.id);
@@ -117,7 +121,7 @@ export default function ReportIncidentForm({ onSuccess }) {
         else router.push("/dashboard");
       }, 1600);
     } catch (e) {
-      setErrorMsg("Failed to confirm incident. Please try again.");
+      setErrorMsg(e.message || "Failed to confirm incident. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -236,10 +240,20 @@ export default function ReportIncidentForm({ onSuccess }) {
                 type="button"
                 size="sm"
                 onClick={handleConfirmDuplicate}
-                disabled={submitting}
-                className="bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs h-8 rounded-lg flex-1"
+                disabled={submitting || duplicateIncident.has_confirmed}
+                className={`font-bold text-xs h-8 rounded-lg flex-1 ${
+                  duplicateIncident.has_confirmed
+                    ? "bg-amber-600/40 text-amber-200 cursor-not-allowed"
+                    : "bg-amber-600 hover:bg-amber-500 text-white"
+                }`}
               >
-                <ThumbsUp className="w-3.5 h-3.5 mr-1" /> Confirm Outage (+1)
+                {duplicateIncident.has_confirmed ? (
+                  <>Already Confirmed</>
+                ) : (
+                  <>
+                    <ThumbsUp className="w-3.5 h-3.5 mr-1" /> Confirm Outage (+1)
+                  </>
+                )}
               </Button>
               <Button
                 type="button"
@@ -357,10 +371,36 @@ export default function ReportIncidentForm({ onSuccess }) {
           <Input
             type="number"
             min={0}
+            step={1}
             value={households}
+            onKeyDown={(e) => {
+              if (["-", "+", "e", "E", ".", ","].includes(e.key)) {
+                e.preventDefault();
+              }
+            }}
+            onPaste={(e) => {
+              const text = e.clipboardData.getData("text");
+              if (/[^0-9]/.test(text)) {
+                e.preventDefault();
+                const digits = text.replace(/\D/g, "");
+                if (digits) {
+                  setHouseholds(String(Math.max(0, parseInt(digits, 10))));
+                }
+              }
+            }}
             onChange={(e) => {
-              const v = e.target.value;
-              setHouseholds(v === "" || Number(v) < 0 ? "" : v);
+              const raw = e.target.value;
+              if (raw === "") {
+                setHouseholds("");
+                return;
+              }
+              const digits = raw.replace(/\D/g, "");
+              if (!digits) {
+                setHouseholds("");
+                return;
+              }
+              const num = Math.max(0, parseInt(digits, 10));
+              setHouseholds(String(num));
             }}
             placeholder="e.g. 30"
             className="h-10 rounded-xl"
